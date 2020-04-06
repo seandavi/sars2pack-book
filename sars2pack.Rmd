@@ -1,18 +1,3 @@
----
-title: "Exploring the COVID-19 pandemic using sars2pack"
-author: "Sean Davis <seandavi@gmail.com> and Vincent J. Carey, stvjc at channing.harvard.edu"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Usage and Data Exploration}
-  %\VignetteEncoding{UTF-8}
-output:
-  BiocStyle::html_document:
-    highlight: pygments
-    number_sections: yes
-    theme: united
-    toc: yes
----
 
 ```{r setup,echo=FALSE}
 suppressMessages({
