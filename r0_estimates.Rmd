@@ -11,38 +11,35 @@ TODO: PARAPHRASE!!!!!
 
 ### What is $R_0$?
 
-$R_0$ is pronounced “R naught.” It’s a mathematical term that indicates how contagious an infectious disease is. It’s also referred to as the reproduction number. As an infection spreads to new people, it reproduces itself.
-
-$R_0$ tells you the average number of people who will catch a disease from one contagious person. It specifically applies to a population of people who were previously free of infection and haven’t been vaccinated. If a disease has an $R_0$ of 18, a person who has the disease will transmit it to an average of 18 other people, as long as no one has been vaccinated against it or is already immune to it in their community.
+$R_0$ is pronounced “R naught.” The $R_0$ value is an estimate of the average number of people who will be infected by one contagious person. It specifically applies to a population of people who are susceptible to the disease (have not been vaccinated and are not immune). If a disease has an $R_0$ of 18, for example, a contagious person will transmit it to an average of 18 other people, assuming that all people in the community are susceptible.
 
 ### What do $R_0$ values mean?
 
-Three possibilities exist for the potential spread or decline of a disease, depending on its $R_0$ value:
+The $R_0$ value of a disease is important to understanding the dynamics of disease spread. Depending on the $R_0$ value, a disease should follow one of three possible courses in the at-risk community.
 
-- If $R_0$ is less than 1, each existing infection causes less than one new infection. In this case, the disease will decline and eventually die out.
-- If $R_0$ equals 1, each existing infection causes one new infection. The disease will stay alive and stable, but there won’t be an outbreak or an epidemic.
-- If $R_0$ is more than 1, each existing infection causes more than one new infection. The disease will spread between people, and there may be an outbreak or epidemic.
+- If $R_0$ is less than 1, each existing infection is spread on average to less than one additional person, leading to decline in the number of cases and eventual end to the spread.
+- If $R_0$ equals 1, each existing infection causes one new infection, leading to stable infection numbers without increase or decrease with time, on average.
+- If $R_0$ is more than 1, each existing infection leads to more than one infection, resulting in growth and potential for epidemic/pandemic conditions.
 
-Importantly, a disease’s $R_0$ value only applies when everyone in a population is completely vulnerable to the disease. This means:
+_Importantly, the disease-specific $R_0$ value pplies when each member of the community is fully vulnerable to the disease with_:
 
-- no one has been vaccinated
-- no one has had the disease before
-- there’s no way to control the spread of the disease
+- no one vaccinated
+- no one immune
+- no way to control the spread of the disease
 
-This combination of conditions is rare nowadays thanks to advances in medicine. Many diseases that were deadly in the past can now be contained and sometimes cured. For example, in 1918 there was a worldwide outbreak of the swine flu that killed 50 million people. According to a review article published in BMC Medicine, the $R_0$ value of the 1918 pandemic was estimated to be between 1.4 and 2.8. But when the swine flu, or H1N1 virus, came back in 2009, its $R_0$ value was between 1.4 and 1.6, report researchers in the journal Science. The existence of vaccines and antiviral drugs made the 2009 outbreak much less deadly.
+### What variables contribute to $R_0$?
 
-### How is the $R_0$ of a disease calculated?
+Three main factors impact the $R_0$ value of a disease:
 
-The following factors are taken into account to calculate the $R_0$ of a disease:
+- *Infectious period*: The time that an infected person can spread the disease varies from one disease to another. Additional factors such as age of the infected person may affect the period during which a person can infect others. A long period of infectiousness will contribute to a higher $R_0$ value.
 
-- *Infectious period*: Some diseases are contagious for longer periods than others. For example, according to the Centers for Disease Control and Prevention, adults with the flu are typically contagious for up to eight days, while children can be contagious for up to two weeks. The longer the infectious period of a disease, the more likely an infected person is to spread the disease to other people. A long period of infectiousness will contribute to a higher $R_0$ value.
+- *Contact rate*: If a person who’s infected with a contagious disease comes into contact with many people who aren’t infected or vaccinated, the disease will spread more quickly. If that person remains at home, in a hospital, or otherwise quarantined while they’re contagious, the disease will spread more slowly. A high contact rate will contribute to a higher $R_0$ value. The corollary, that lower contact rate, can reduce $R_0$ is the basis for [flattening the curve](https://www.nytimes.com/article/flatten-curve-coronavirus.html) through [social distancing](https://en.wikipedia.org/wiki/Social_distancing).
 
-- *Contact rate*: If a person who’s infected with a contagious disease comes into contact with many people who aren’t infected or vaccinated, the disease will spread more quickly. If that person remains at home, in a hospital, or otherwise quarantined while they’re contagious, the disease will spread more slowly. A high contact rate will contribute to a higher $R_0$ value.
+![Toby Morris (Spinoff.co.nz) / CC BY-SA (https://creativecommons.org/licenses/by-sa/4.0)](https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Covid-19-Transmission-graphic-01.gif/512px-Covid-19-Transmission-graphic-01.gif)
+
 
 - *Mode of transmission*:
-The diseases that spread most quickly and easily are the ones that can travel through the air, such as the flu or measles. Physical contact with an infected person isn’t necessary for the transmission of such conditions. You can catch the flu from breathing near someone who has the flu, even if you never touch them.
-
-In contrast, diseases that are transmitted through bodily fluids, such as Ebola or HIV, aren’t as easy to catch or spread. This is because you need to come into contact with infected blood, saliva, or other bodily fluids to contract them. Airborne illnesses tend to have a higher $R_0$ value than those spread through contact.
+Airborne illnesses tend to have a higher $R_0$ value than those spread through contact or through bodily fluids. 
 
 
 ## Simulated epidemic model
