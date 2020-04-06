@@ -37,27 +37,9 @@ Contributions of additional data resources or simple accessor functions
 will only add to our abilities to use data science and modeling
 to understand COVID-19.
 
-*Request for help*: I would be more than happy to accept help with 
-defining new data resources. Consider a [pull request] (or an [issue] for
-non-programmer types). 
+*Request for help*: We are looking for additional data resources. Consider a [pull request] (or an [issue] for non-programmer types) with suggestions. 
 
-### Epidemic time-series data
-
-- [JHU] : global deaths, confirmed cases, and recovered time series
-  data; *does not include fine-level United States data*. See
-  `jhu_data()`.
-- [New York Times] : United states state and county level deaths,
-  confirmed cases time series. See `nytimes_county_data()` and
-  `nytimes_state_data`.
-- [USAFacts] : Alternative United states state and county level deaths
-  and confirmed cases time series
-
-## Additional resources described in this vignette
-
-
-
-- 
-
+# TODO: give background on datasets
 
 # Epidemic time series data
 
