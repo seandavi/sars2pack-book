@@ -36,7 +36,7 @@ changing daily as captured by data reported around the world. The
    currently perform experiments
 
 
-## Origins of this package 
+## Origins of this package
 
 John C. Mallery conveyed code of Charles Morefield to harvest COVID-19
 time series data.  Vince Carey then started an R package/github repo
