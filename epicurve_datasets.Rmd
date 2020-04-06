@@ -1,4 +1,4 @@
-# Epicurves
+# Epicurve Datasets
 
 ```{r init, include=FALSE}
 library(knitr)
