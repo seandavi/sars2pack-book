@@ -9,8 +9,9 @@ rmd_files:
   - "eurostat_combo.Rmd"
   - "epicurve_datasets.Rmd"
   - "map_visualization.Rmd"
-  - "origins.Rmd"
-rmd_subdir:
-  - rmarkdown
-  
-
+edit: https://github.com/seandavi/COVID19Book/edit/master/%s
+view: https://github.com/seandavi/COVID19Book/blob/master/%s
+history: https://github.com/seandavi/COVID19Book/commits/master/%s
+github-repo: "seandavi/COVID19Book"
+cover-image: "images/logo.png"
+url: https://seandavi.github.io/COVID19Book
