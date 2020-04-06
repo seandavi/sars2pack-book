@@ -1,13 +1,27 @@
-# Modeling Replication rate
+# The Replication rate, $R_0$
 
 ```{r include=FALSE}
 library(sars2pack)
 library(BiocStyle)
+library(knitr)
+prod=FALSE
+if(Sys.getenv('ENVIRONMENT','DEV')=="PROD") {
+    prod=TRUE
+}
+knitr::opts_chunk$set(warning=!prod, message=!prod)
 ```
+
+## Learning goals and objectives
+
+- Gain an intuitive understanding of $R_0$.
+- Know that the value of $R_0$ determines how quickly a disease spreads or is eliminated.
+- Name the three main drivers of $R_0$
+- Learn to estimate $R_0$ from data on the number of infections over time occurring in a population.
 
 ## Background
 
-TODO: PARAPHRASE!!!!!
+The replication rate, $R_0$ is a central value in understanding the rate at which a disease is spreading in a susceptible population. 
+
 
 ### What is $R_0$?
 
@@ -44,6 +58,8 @@ Airborne illnesses tend to have a higher $R_0$ value than those spread through c
 
 ## Simulated epidemic model
 
+**TODO**: plot of incidence along with $R_0(t)$
+
 Following code conveyed by John Mallery, we have the following
 approach for estimating $R_0$ using a single realization of
 an epidemic simulation.
@@ -52,6 +68,7 @@ Note that there can be failures of `estimate.R` for certain
 inputs.  We are working on that.
 
 ```{r dostraight}
+library(sars2pack)
 library(R0)
 library(lubridate)
 # Generating an epidemic with given parameters
@@ -69,18 +86,23 @@ was calling `dev.new` too often.  Use `plot2`.
 
 ```{r lksim,fig.height=7}
 par(mfrow=c(2,2))
-plot2(est)
+sars2pack::plot2(est)
 ```
 
-The plotfit2 function is also useful.  These fits
+The `plotfit2` function is also useful.  These fits
 look identical but they are not.
 
 ```{r lksim2, fig.height=7}
 par(mfrow=c(2,2))
-plotfit2(est)
+sars2pack::plotfit2(est)
 ```
 
 ## Real data examples
+
+```{r}
+library(dplyr)
+library(magrittr)
+```
 
 Now we extract information from the time-series table and
 obtain estimates of $R_0$ under exponential growth.
@@ -125,12 +147,14 @@ itdat.filt = trim_leading_values(c(itdat[1], diff(itdat)))
 est.EG <- estimate.R(epid=itdat.filt, GT=mGT, 
     methods=c("EG"), begin=1L, end=as.integer(length(itdat.filt)))
 est.EG
-par(mfrow=c(2,2), mar=c(5,3,2,2))
+par(mfrow=c(2,1), mar=c(5,3,2,2))
 plot2(est.EG, main="Italy")
 plotfit2(est.EG, main="Italy")
 ```
 
 ### New York City
+
+**TODO**: plot of incidence along with $R_0(t)$
 
 ```{r warning=FALSE, message=FALSE}
 nyt = nytimes_county_data() %>%
@@ -150,5 +174,5 @@ library(EpiEstim)
 epiestim = EpiEstim::estimate_R(nytdat.filt, method = "parametric_si",
                                 config = EpiEstim::make_config(list(
                                     mean_si = 3.96, std_si = 4.75)))
-plot(epiestim)
+invisible(plot(epiestim))
 ```
