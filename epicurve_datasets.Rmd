@@ -1,13 +1,4 @@
-# Epicurve Datasets
-
-```{r init, include=FALSE}
-library(knitr)
-prod=FALSE
-if(Sys.getenv('ENVIRONMENT','DEV')=="PROD") {
-    prod=TRUE
-}
-knitr::opts_chunk$set(warning=!prod, message=!prod)
-```
+# Epicurves
 
 ```{r}
 library(sars2pack)
@@ -44,20 +35,11 @@ DT::datatable(usa_facts[sample(1:nrow(usa_facts),500),] %>%
               extensions = 'Scroller', options = list(scrollX=TRUE))
 ```
 
-### New York Times County
+### New York Times
 
 ```{r nyt_epicurves}
 nytimes = nytimes_county_data()
 DT::datatable(nytimes[sample(1:nrow(nytimes),500),] %>%
               dplyr::arrange(state, county, date, subset),
-              extensions = 'Scroller', options = list(scrollX=TRUE))
-```
-
-### New York Times State
-
-```{r nyt_state_epicurves}
-nytimes = nytimes_state_data()
-DT::datatable(nytimes[sample(1:nrow(nytimes),500),] %>%
-              dplyr::arrange(state, date, subset),
               extensions = 'Scroller', options = list(scrollX=TRUE))
 ```

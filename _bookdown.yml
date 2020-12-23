@@ -1,17 +1,25 @@
-delete_merged_file: yes
-book_filename: covid_19
-# Sets up https://bookdown.org/yihui/bookdown/new-session.html
+book_filename: COVID-19
+repo: https://github.com/rstudio/bookdown/
+output_dir: _book
+delete_merged_file: true
+language:
+  label:
+    fig: "Figure "
+    tab: "Table "
+  ui:
+    edit: "Edit"
+    chapter_name: "Chapter "
 new_session: yes
 rmd_files:
-  - "index.Rmd"
-  - "sars2pack.Rmd"
-  - "r0_estimates.Rmd"
-  - "eurostat_combo.Rmd"
-  - "epicurve_datasets.Rmd"
-  - "map_visualization.Rmd"
-edit: https://github.com/seandavi/COVID19Book/edit/master/%s
-view: https://github.com/seandavi/COVID19Book/blob/master/%s
-history: https://github.com/seandavi/COVID19Book/commits/master/%s
-github-repo: "seandavi/COVID19Book"
-cover-image: "images/logo.png"
-url: https://seandavi.github.io/COVID19Book
+  - index.Rmd
+  - overview.Rmd
+  - datasets.Rmd
+  - case_tracking.Rmd
+  - how_much_testing.Rmd
+  - map_visualization.Rmd
+  - more_visualization.Rmd
+  - r0_estimates.Rmd
+  - add_a_dataset.Rmd
+#  - tsanalysis.Rmd
+  - phylogenetics.Rmd
+#  - doMCMC.Rmd
