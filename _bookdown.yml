@@ -1,5 +1,5 @@
-book_filename: COVID-19
-repo: https://github.com/rstudio/bookdown/
+book_filename: sars2pack-book
+repo: https://github.com/seandavi/sars2pack-book
 output_dir: _book
 delete_merged_file: true
 language:

@@ -1,21 +1,36 @@
-
-
 # Phylogenetic data
 
-```{r}
+[@Rambaut2020Nov]
+
+[@Singer2020Jun]
+
+
+```{r message=FALSE}
 library(sars2pack)
 library(ggplot2)
 library(dplyr)
+library(ggtree)
+library(ape)
+library(stringr)
 ```
 
-
-```{r}
+```{r message=FALSE}
 ntr = cov_glue_newick_data()
-plot(ntr)
 ```
 
 
-```{r}
+see See Figure \@ref(fig:ggtreeNewick)
+
+
+```{r ggtreeNewick,out.width='100%',fig.width=12,fig.height=12,fig.cap='abc'}
+groups = str_match(ntr$tip.label,'.*_([A-Z][\\.]?[0-9]?[0-9]?).*')
+ntr = groupOTU(ntr, split(ntr$tip.label,groups[,2]))
+ggtree(ntr, aes(color=group), layout="circular", branch.length="none") +
+  geom_tiplab(size=3, aes(angle=angle)) +
+  ggtitle('COVID Glue Phylogenetic Clades')
+```
+
+```{r warning=FALSE}
 dat = cov_glue_lineage_data()
 dat = dat %>%
     dplyr::mutate(lineage = sub('^([^.][.]?[^.]+).*', '\\1', lineage)) %>%
@@ -28,7 +43,7 @@ dat = dat %>%
 head(dat)
 ```
 
-```{r}
+```{r lineageSpread,fig.height=12,fig.width=10,out.width='100%', warning=FALSE}
 p = dat %>%
     ggplot(aes(x=epiweek,y=cases,fill=lineage)) +
     geom_bar(stat='identity', position='fill') +
