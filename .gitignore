@@ -2,3 +2,4 @@ _book
 _bookdown_files
 .projectile*
 .Rproj.user
+.Rhistory
