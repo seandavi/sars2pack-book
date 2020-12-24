@@ -1,3 +1,3 @@
 Suggests:
-    sars2pack, eurostat, tmap, ggplot2, dplyr, magrittr
-
+    sars2pack, eurostat, tmap, ggplot2, dplyr, magrittr, MASS, lme4, pscl, NBZIMM,
+    ape, ggtree
