@@ -1,0 +1,41 @@
+# Getting started
+
+
+```{r setup,echo=FALSE}
+suppressMessages({
+suppressPackageStartupMessages({
+library(BiocStyle)
+library(sars2pack)
+library(dplyr)
+library(ggplot2)
+library(tibble)
+library(lubridate)
+library(DT)
+})
+})
+```
+
+The `r Githubpkg('seandavi/sars2pack')` package uses the [`R statistical programming environment`](https://www.r-project.org/), 
+so the first step it to [download and install `R`](https://cloud.r-project.org/). You may also want to _additionally and optionally_ install 
+[`Rstudio`](https://rstudio.com/products/rstudio/download/#download). 
+
+## Installation
+
+After installing `R`, from inside the R console, install the `r Githubpkg('seandavi/sars2pack')` package.
+
+```{r eval=FALSE}
+install.packages('BiocManager')
+BiocManager::install('seandavi/sars2pack')
+```
+
+## Usage
+
+To get started using `r Githubpkg('seandavi/sars2pack')`, load the library.
+
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+library(sars2pack)
+```
+
+The material in this book are located at [extended online book for
+documentation](https://seandavi.github.io/sars2pack-book/). 
