@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Visualizing geographic data without maps | sars2pack: Understanding COVID-19 with R and Public Data</title>
+  <meta name="description" content="Chapter 6 Visualizing geographic data without maps | sars2pack: Understanding COVID-19 with R and Public Data" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Visualizing geographic data without maps | sars2pack: Understanding COVID-19 with R and Public Data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="images/cover.png" />
+  
+  <meta name="github-repo" content="seandavi/sars2pack-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Visualizing geographic data without maps | sars2pack: Understanding COVID-19 with R and Public Data" />
+  <meta name="twitter:site" content="@seandavis12" />
+  
+  <meta name="twitter:image" content="images/cover.png" />
+
+<meta name="author" content="Vincent J. Carey" />
+<meta name="author" content="Charles Morefield" />
+<meta name="author" content="John Mallery" />
+<meta name="author" content="Sean Davis" />
+
+
+<meta name="date" content="2020-12-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="map-visualizations.html"/>
+<link rel="next" href="the-replication-rate-r-0.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/jsoneditor-5.25.6/jsoneditor.min.css" rel="stylesheet" />
+<script src="libs/jsoneditor-5.25.6/jsoneditor.min.js"></script>
+<script src="libs/jsonedit-binding-3.0.0/jsonedit.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#installation"><i class="fa fa-check"></i><b>1.1</b> Installation</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#usage"><i class="fa fa-check"></i><b>1.2</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="available-datasets.html"><a href="available-datasets.html"><i class="fa fa-check"></i><b>2</b> Available datasets</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="available-datasets.html"><a href="available-datasets.html#searchable-dataset-catalog"><i class="fa fa-check"></i><b>2.1</b> Searchable dataset catalog</a></li>
+<li class="chapter" data-level="2.2" data-path="available-datasets.html"><a href="available-datasets.html#dataset-details"><i class="fa fa-check"></i><b>2.2</b> Dataset details</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="case-tracking-data.html"><a href="case-tracking-data.html"><i class="fa fa-check"></i><b>3</b> Case tracking data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="case-tracking-data.html"><a href="case-tracking-data.html#compare-us-datasets"><i class="fa fa-check"></i><b>3.1</b> Compare US datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="how-much-testing.html"><a href="how-much-testing.html"><i class="fa fa-check"></i><b>4</b> How much testing?</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="how-much-testing.html"><a href="how-much-testing.html#outline-of-the-problem"><i class="fa fa-check"></i><b>4.1</b> Outline of the problem</a></li>
+<li class="chapter" data-level="4.2" data-path="how-much-testing.html"><a href="how-much-testing.html#motivation-for-visualization"><i class="fa fa-check"></i><b>4.2</b> Motivation for visualization</a></li>
+<li class="chapter" data-level="4.3" data-path="how-much-testing.html"><a href="how-much-testing.html#intuitive-visualization-of-amount-of-testing"><i class="fa fa-check"></i><b>4.3</b> Intuitive visualization of amount of testing</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="map-visualizations.html"><a href="map-visualizations.html"><i class="fa fa-check"></i><b>5</b> Map visualizations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="map-visualizations.html"><a href="map-visualizations.html#interactive-maps"><i class="fa fa-check"></i><b>5.1</b> Interactive maps</a></li>
+<li class="chapter" data-level="5.2" data-path="map-visualizations.html"><a href="map-visualizations.html#united-states"><i class="fa fa-check"></i><b>5.2</b> United States</a></li>
+<li class="chapter" data-level="5.3" data-path="map-visualizations.html"><a href="map-visualizations.html#small-multiples"><i class="fa fa-check"></i><b>5.3</b> Small multiples</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="map-visualizations.html"><a href="map-visualizations.html#united-states-1"><i class="fa fa-check"></i><b>5.3.1</b> United states</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html"><i class="fa fa-check"></i><b>6</b> Visualizing geographic data without maps</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#prepping-the-data-from-sars2pack"><i class="fa fa-check"></i><b>6.1</b> Prepping the data from sars2pack</a></li>
+<li class="chapter" data-level="6.2" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#plotting-one-geographic-unit-example-new-york-state"><i class="fa fa-check"></i><b>6.2</b> Plotting one geographic unit (example: New York state)</a></li>
+<li class="chapter" data-level="6.3" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#plotting-multiple-geographic-units-example-all-us-states"><i class="fa fa-check"></i><b>6.3</b> Plotting multiple geographic units (example: all US states)</a></li>
+<li class="chapter" data-level="6.4" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#plotting-multiple-geographic-units-example-all-washington-state-counties"><i class="fa fa-check"></i><b>6.4</b> Plotting multiple geographic units (example: all Washington state counties)</a></li>
+<li class="chapter" data-level="6.5" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#extending-geographic-facets-to-other-regions"><i class="fa fa-check"></i><b>6.5</b> Extending geographic facets to other regions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html"><i class="fa fa-check"></i><b>7</b> The Replication rate, <span class="math inline">\(R_0\)</span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#learning-goals-and-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning goals and objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#background"><i class="fa fa-check"></i><b>7.2</b> Background</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#what-is-r_0"><i class="fa fa-check"></i><b>7.2.1</b> What is <span class="math inline">\(R_0\)</span>?</a></li>
+<li class="chapter" data-level="7.2.2" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#what-do-r_0-values-mean"><i class="fa fa-check"></i><b>7.2.2</b> What do <span class="math inline">\(R_0\)</span> values mean?</a></li>
+<li class="chapter" data-level="7.2.3" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#what-variables-contribute-to-r_0"><i class="fa fa-check"></i><b>7.2.3</b> What variables contribute to <span class="math inline">\(R_0\)</span>?</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#real-data-examples"><i class="fa fa-check"></i><b>7.3</b> Real data examples</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#state-of-maryland-in-the-united-states"><i class="fa fa-check"></i><b>7.3.1</b> State of Maryland in the United States</a></li>
+<li class="chapter" data-level="7.3.2" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#state-of-arizona-in-the-united-states"><i class="fa fa-check"></i><b>7.3.2</b> State of Arizona in the United States</a></li>
+<li class="chapter" data-level="7.3.3" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#brazil"><i class="fa fa-check"></i><b>7.3.3</b> Brazil</a></li>
+<li class="chapter" data-level="7.3.4" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#hubei-province"><i class="fa fa-check"></i><b>7.3.4</b> Hubei Province</a></li>
+<li class="chapter" data-level="7.3.5" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#italy"><i class="fa fa-check"></i><b>7.3.5</b> Italy</a></li>
+<li class="chapter" data-level="7.3.6" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#new-york-city"><i class="fa fa-check"></i><b>7.3.6</b> New York City</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#italy-from-jhu-dataset"><i class="fa fa-check"></i><b>7.4</b> Italy from JHU dataset</a></li>
+<li class="chapter" data-level="7.5" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#simulated-epidemic-model"><i class="fa fa-check"></i><b>7.5</b> Simulated epidemic model</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html"><i class="fa fa-check"></i><b>8</b> How to add a new dataset to <code>sars2pack</code></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#add-an-r-file."><i class="fa fa-check"></i><b>8.1</b> Add an R file.</a></li>
+<li class="chapter" data-level="8.2" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#caching-using-s2p_cached_url"><i class="fa fa-check"></i><b>8.2</b> Caching using s2p_cached_url</a></li>
+<li class="chapter" data-level="8.3" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#add-an-entry-to-catalog.yaml"><i class="fa fa-check"></i><b>8.3</b> Add an entry to <code>catalog.yaml</code></a></li>
+<li class="chapter" data-level="8.4" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#run-the-create_dataset_details-function"><i class="fa fa-check"></i><b>8.4</b> Run the <code>create_dataset_details()</code> function</a></li>
+<li class="chapter" data-level="8.5" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#run-devtoolstest"><i class="fa fa-check"></i><b>8.5</b> Run <code>devtools::test()</code></a></li>
+<li class="chapter" data-level="8.6" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#continue-with-normal-r-pull-request"><i class="fa fa-check"></i><b>8.6</b> Continue with normal R pull request</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="phylogenetic-data.html"><a href="phylogenetic-data.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic data</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="phylogenetic-data.html"><a href="phylogenetic-data.html#notes"><i class="fa fa-check"></i><b>9.1</b> Notes</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">sars2pack: Understanding COVID-19 with R and Public Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="visualizing-geographic-data-without-maps" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Visualizing geographic data without maps</h1>
+<p>You may have seen visualizations of COVID-19 cases plotted on a map. These maps often represent quantitative information either using color in proportion to values (these are called “choropleths”) or circle area proportional to values (these are called bubble plots). While visually striking, these maps are limited in terms of the amount of quantitative information they can communicate about regions. Here, we take a different approach that allows us to create basically any visual display of quantitative information and present it with an approximation of the geographic context.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="visualizing-geographic-data-without-maps.html#cb30-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb30-2"><a href="visualizing-geographic-data-without-maps.html#cb30-2"></a><span class="kw">library</span>(tidyr)</span>
+<span id="cb30-3"><a href="visualizing-geographic-data-without-maps.html#cb30-3"></a><span class="kw">library</span>(purrr)</span>
+<span id="cb30-4"><a href="visualizing-geographic-data-without-maps.html#cb30-4"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb30-5"><a href="visualizing-geographic-data-without-maps.html#cb30-5"></a><span class="kw">library</span>(zoo)</span>
+<span id="cb30-6"><a href="visualizing-geographic-data-without-maps.html#cb30-6"></a><span class="kw">library</span>(plotly)</span>
+<span id="cb30-7"><a href="visualizing-geographic-data-without-maps.html#cb30-7"></a><span class="kw">library</span>(geofacet)</span>
+<span id="cb30-8"><a href="visualizing-geographic-data-without-maps.html#cb30-8"></a><span class="kw">library</span>(sars2pack)</span></code></pre></div>
+<div id="prepping-the-data-from-sars2pack" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Prepping the data from sars2pack</h2>
+<p>Let’s start with US county-level data from JHU and state-level data from the COVID Tracking Project.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="visualizing-geographic-data-without-maps.html#cb31-1"></a>cusa =<span class="st"> </span><span class="kw">jhu_us_data</span>()</span>
+<span id="cb31-2"><a href="visualizing-geographic-data-without-maps.html#cb31-2"></a><span class="kw">glimpse</span>(cusa)</span></code></pre></div>
+<pre><code>## Rows: 2,291,240
+## Columns: 15
+## $ UID          &lt;dbl&gt; 84001001, 84001001, 84001001, 84001001, 84001001, 840010…
+## $ iso2         &lt;chr&gt; &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;U…
+## $ iso3         &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, …
+## $ code3        &lt;dbl&gt; 840, 840, 840, 840, 840, 840, 840, 840, 840, 840, 840, 8…
+## $ fips         &lt;chr&gt; &quot;01001&quot;, &quot;01001&quot;, &quot;01001&quot;, &quot;01001&quot;, &quot;01001&quot;, &quot;01001&quot;, &quot;0…
+## $ county       &lt;chr&gt; &quot;Autauga&quot;, &quot;Autauga&quot;, &quot;Autauga&quot;, &quot;Autauga&quot;, &quot;Autauga&quot;, &quot;…
+## $ state        &lt;chr&gt; &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;…
+## $ country      &lt;chr&gt; &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;U…
+## $ Lat          &lt;dbl&gt; 32.53953, 32.53953, 32.53953, 32.53953, 32.53953, 32.539…
+## $ Long         &lt;dbl&gt; -86.64408, -86.64408, -86.64408, -86.64408, -86.64408, -…
+## $ Combined_Key &lt;chr&gt; &quot;Autauga, Alabama, US&quot;, &quot;Autauga, Alabama, US&quot;, &quot;Autauga…
+## $ Population   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ date         &lt;date&gt; 2020-01-22, 2020-01-23, 2020-01-24, 2020-01-25, 2020-01…
+## $ count        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ subset       &lt;chr&gt; &quot;confirmed&quot;, &quot;confirmed&quot;, &quot;confirmed&quot;, &quot;confirmed&quot;, &quot;con…</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="visualizing-geographic-data-without-maps.html#cb33-1"></a>ctp =<span class="st"> </span><span class="kw">covidtracker_data</span>()</span>
+<span id="cb33-2"><a href="visualizing-geographic-data-without-maps.html#cb33-2"></a><span class="kw">glimpse</span>(ctp)</span></code></pre></div>
+<pre><code>## Rows: 16,931
+## Columns: 16
+## $ date                   &lt;date&gt; 2020-12-29, 2020-12-29, 2020-12-29, 2020-12-2…
+## $ fips                   &lt;chr&gt; &quot;00002&quot;, &quot;00001&quot;, &quot;00005&quot;, &quot;00060&quot;, &quot;00004&quot;, &quot;…
+## $ state                  &lt;chr&gt; &quot;AK&quot;, &quot;AL&quot;, &quot;AR&quot;, &quot;AS&quot;, &quot;AZ&quot;, &quot;CA&quot;, &quot;CO&quot;, &quot;CT&quot;…
+## $ positive               &lt;int&gt; 44581, 351804, 219246, 0, 507222, 2187221, 328…
+## $ negative               &lt;int&gt; 1215264, 1571253, 1841869, 2140, 2310576, 3018…
+## $ death                  &lt;int&gt; 201, 4737, 3603, 0, 8640, 24526, 4687, 5924, 7…
+## $ pending                &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 6925, …
+## $ hospitalized           &lt;int&gt; 1004, 33452, 11168, NA, 36075, NA, 18230, 1225…
+## $ hospitalizedCurrently  &lt;int&gt; 83, 2804, 1161, NA, 4475, 21240, 1188, 1226, 2…
+## $ recovered              &lt;int&gt; 7165, 193149, 194436, NA, 74223, NA, 17652, 98…
+## $ inIcuCumulative        &lt;int&gt; NA, 2424, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ inIcuCurrently         &lt;int&gt; NA, NA, 382, NA, 1053, 4390, NA, NA, 72, 60, N…
+## $ onVentilatorCurrently  &lt;int&gt; 10, NA, 198, NA, 720, NA, NA, NA, 35, NA, NA, …
+## $ onVentilatorCumulative &lt;int&gt; NA, 1394, 1199, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ dateChecked            &lt;dttm&gt; 2020-12-29 03:59:00, 2020-12-29 11:00:00, 202…
+## $ dataQualityGrade       &lt;chr&gt; &quot;A&quot;, &quot;A&quot;, &quot;A+&quot;, &quot;D&quot;, &quot;A+&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A+&quot;…</code></pre>
+<p>We need to very lightly clean cumulative data that <em>should</em> be monotonically increasing day-over-day (but isn’t always) and convert it from cumulative values to daily incidents. The data are in different formats, so we’ll use slightly different data munging workflows.</p>
+<p>The JHU data don’t contain a value for every location-date-subset combination, so we need to fill in those gaps.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="visualizing-geographic-data-without-maps.html#cb35-1"></a>iusa &lt;-<span class="st"> </span>cusa <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-2"><a href="visualizing-geographic-data-without-maps.html#cb35-2"></a><span class="st">  </span><span class="kw">arrange</span>(Combined_Key, subset, date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-3"><a href="visualizing-geographic-data-without-maps.html#cb35-3"></a><span class="st">  </span><span class="kw">group_by</span>(Combined_Key, subset) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-4"><a href="visualizing-geographic-data-without-maps.html#cb35-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count =</span> <span class="kw">pmin.int</span>(count, dplyr<span class="op">::</span><span class="kw">lead</span>(count, <span class="dt">order_by =</span> date), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb35-5"><a href="visualizing-geographic-data-without-maps.html#cb35-5"></a>         <span class="dt">incidents =</span>  <span class="kw">pmax.int</span>(<span class="kw">pmap_dbl</span>(<span class="kw">list</span>(count, <span class="dv">-1</span><span class="op">*</span>dplyr<span class="op">::</span><span class="kw">lag</span>(count, <span class="dt">order_by =</span> date)), </span>
+<span id="cb35-6"><a href="visualizing-geographic-data-without-maps.html#cb35-6"></a>                                        <span class="op">~</span><span class="st"> </span><span class="kw">sum</span>(..., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)), </span>
+<span id="cb35-7"><a href="visualizing-geographic-data-without-maps.html#cb35-7"></a>                               <span class="dv">0</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-8"><a href="visualizing-geographic-data-without-maps.html#cb35-8"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-9"><a href="visualizing-geographic-data-without-maps.html#cb35-9"></a><span class="st">  </span><span class="kw">complete</span>(date, subset, </span>
+<span id="cb35-10"><a href="visualizing-geographic-data-without-maps.html#cb35-10"></a>           <span class="kw">nesting</span>(UID, iso2, iso3, code3, fips, county, state, country, Lat, Long, Combined_Key),</span>
+<span id="cb35-11"><a href="visualizing-geographic-data-without-maps.html#cb35-11"></a>           <span class="dt">fill =</span> <span class="kw">list</span>(<span class="dt">incidents =</span> <span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-12"><a href="visualizing-geographic-data-without-maps.html#cb35-12"></a><span class="st">  </span><span class="kw">replace_na</span>(<span class="kw">list</span>(<span class="dt">incidents =</span> <span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-13"><a href="visualizing-geographic-data-without-maps.html#cb35-13"></a><span class="st">  </span><span class="kw">group_by</span>(Combined_Key, subset) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-14"><a href="visualizing-geographic-data-without-maps.html#cb35-14"></a><span class="st">  </span><span class="kw">arrange</span>(date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-15"><a href="visualizing-geographic-data-without-maps.html#cb35-15"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ma7 =</span> <span class="kw">rollmean</span>(incidents, <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">align =</span> <span class="st">&quot;right&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-16"><a href="visualizing-geographic-data-without-maps.html#cb35-16"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-17"><a href="visualizing-geographic-data-without-maps.html#cb35-17"></a><span class="st">  </span><span class="kw">filter</span>(date <span class="op">&gt;=</span><span class="st"> &quot;2020-03-15&quot;</span>, iso2 <span class="op">==</span><span class="st"> &quot;US&quot;</span>)</span>
+<span id="cb35-18"><a href="visualizing-geographic-data-without-maps.html#cb35-18"></a></span>
+<span id="cb35-19"><a href="visualizing-geographic-data-without-maps.html#cb35-19"></a><span class="kw">glimpse</span>(iusa)</span></code></pre></div>
+<pre><code>## Rows: 2,060,740
+## Columns: 17
+## $ date         &lt;date&gt; 2020-03-15, 2020-03-15, 2020-03-15, 2020-03-15, 2020-03…
+## $ subset       &lt;chr&gt; &quot;confirmed&quot;, &quot;confirmed&quot;, &quot;confirmed&quot;, &quot;confirmed&quot;, &quot;con…
+## $ UID          &lt;dbl&gt; 84001001, 84001003, 84001005, 84001007, 84001009, 840010…
+## $ iso2         &lt;chr&gt; &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;U…
+## $ iso3         &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, &quot;USA&quot;, …
+## $ code3        &lt;dbl&gt; 840, 840, 840, 840, 840, 840, 840, 840, 840, 840, 840, 8…
+## $ fips         &lt;chr&gt; &quot;01001&quot;, &quot;01003&quot;, &quot;01005&quot;, &quot;01007&quot;, &quot;01009&quot;, &quot;01011&quot;, &quot;0…
+## $ county       &lt;chr&gt; &quot;Autauga&quot;, &quot;Baldwin&quot;, &quot;Barbour&quot;, &quot;Bibb&quot;, &quot;Blount&quot;, &quot;Bull…
+## $ state        &lt;chr&gt; &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;…
+## $ country      &lt;chr&gt; &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;U…
+## $ Lat          &lt;dbl&gt; 32.53953, 30.72775, 31.86826, 32.99642, 33.98211, 32.100…
+## $ Long         &lt;dbl&gt; -86.64408, -87.72207, -85.38713, -87.12511, -86.56791, -…
+## $ Combined_Key &lt;chr&gt; &quot;Autauga, Alabama, US&quot;, &quot;Baldwin, Alabama, US&quot;, &quot;Barbour…
+## $ Population   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ count        &lt;dbl&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ incidents    &lt;dbl&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ ma7          &lt;dbl&gt; 0.0000000, 0.1428571, 0.0000000, 0.0000000, 0.0000000, 0…</code></pre>
+<p>The COVID Tracking Project data doesn’t have a record for every location-date combination and can contain NA values, so we need to fill in the gaps and also transform it into long format for plotting</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="visualizing-geographic-data-without-maps.html#cb37-1"></a>US_states &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;AL&#39;</span>, <span class="st">&#39;AK&#39;</span>, <span class="st">&#39;AR&#39;</span>, <span class="st">&#39;AZ&#39;</span>, <span class="st">&#39;CA&#39;</span>, <span class="st">&#39;CO&#39;</span>, <span class="st">&#39;CT&#39;</span>, <span class="st">&#39;DC&#39;</span>, <span class="st">&#39;DE&#39;</span>, <span class="st">&#39;FL&#39;</span>, <span class="st">&#39;GA&#39;</span>,</span>
+<span id="cb37-2"><a href="visualizing-geographic-data-without-maps.html#cb37-2"></a>               <span class="st">&#39;HI&#39;</span>, <span class="st">&#39;IA&#39;</span>, <span class="st">&#39;ID&#39;</span>, <span class="st">&#39;IL&#39;</span>, <span class="st">&#39;IN&#39;</span>, <span class="st">&#39;KS&#39;</span>, <span class="st">&#39;KY&#39;</span> ,<span class="st">&#39;LA&#39;</span>, <span class="st">&#39;MA&#39;</span>, <span class="st">&#39;MD&#39;</span>, <span class="st">&#39;ME&#39;</span>,</span>
+<span id="cb37-3"><a href="visualizing-geographic-data-without-maps.html#cb37-3"></a>               <span class="st">&#39;MI&#39;</span>, <span class="st">&#39;MN&#39;</span>, <span class="st">&#39;MO&#39;</span>, <span class="st">&#39;MS&#39;</span>, <span class="st">&#39;MT&#39;</span>, <span class="st">&#39;NC&#39;</span>, <span class="st">&#39;ND&#39;</span>, <span class="st">&#39;NE&#39;</span>, <span class="st">&#39;NH&#39;</span>, <span class="st">&#39;NJ&#39;</span>, <span class="st">&#39;NM&#39;</span>,</span>
+<span id="cb37-4"><a href="visualizing-geographic-data-without-maps.html#cb37-4"></a>               <span class="st">&#39;NV&#39;</span>, <span class="st">&#39;NY&#39;</span>, <span class="st">&#39;OH&#39;</span>, <span class="st">&#39;OK&#39;</span>, <span class="st">&#39;OR&#39;</span>, <span class="st">&#39;PA&#39;</span>, <span class="st">&#39;RI&#39;</span>, <span class="st">&#39;SC&#39;</span>, <span class="st">&#39;SD&#39;</span>, <span class="st">&#39;TN&#39;</span>, <span class="st">&#39;TX&#39;</span>,</span>
+<span id="cb37-5"><a href="visualizing-geographic-data-without-maps.html#cb37-5"></a>               <span class="st">&#39;UT&#39;</span>, <span class="st">&#39;VA&#39;</span>, <span class="st">&#39;VT&#39;</span>, <span class="st">&#39;WA&#39;</span>, <span class="st">&#39;WI&#39;</span>, <span class="st">&#39;WV&#39;</span>, <span class="st">&#39;WY&#39;</span>)</span>
+<span id="cb37-6"><a href="visualizing-geographic-data-without-maps.html#cb37-6"></a></span>
+<span id="cb37-7"><a href="visualizing-geographic-data-without-maps.html#cb37-7"></a>ictp &lt;-<span class="st"> </span>ctp <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-8"><a href="visualizing-geographic-data-without-maps.html#cb37-8"></a><span class="st">  </span><span class="kw">group_by</span>(state) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-9"><a href="visualizing-geographic-data-without-maps.html#cb37-9"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">c</span>(<span class="st">&quot;positive&quot;</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;death&quot;</span>), <span class="op">~</span><span class="st"> </span><span class="kw">pmin.int</span>(., dplyr<span class="op">::</span><span class="kw">lead</span>(., <span class="dt">order_by =</span> date), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-10"><a href="visualizing-geographic-data-without-maps.html#cb37-10"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">c</span>(<span class="st">&quot;positive&quot;</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;death&quot;</span>),          </span>
+<span id="cb37-11"><a href="visualizing-geographic-data-without-maps.html#cb37-11"></a>            <span class="kw">list</span>(<span class="dt">incidents =</span> <span class="op">~</span><span class="st"> </span><span class="kw">pmax.int</span>(<span class="kw">pmap_dbl</span>(<span class="kw">list</span>(., <span class="dv">-1</span><span class="op">*</span>dplyr<span class="op">::</span><span class="kw">lag</span>(., <span class="dt">order_by =</span> date)), </span>
+<span id="cb37-12"><a href="visualizing-geographic-data-without-maps.html#cb37-12"></a>                                           <span class="op">~</span><span class="st"> </span><span class="kw">sum</span>(..., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)), </span>
+<span id="cb37-13"><a href="visualizing-geographic-data-without-maps.html#cb37-13"></a>                                  <span class="dv">0</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))) <span class="op">%&gt;%</span></span>
+<span id="cb37-14"><a href="visualizing-geographic-data-without-maps.html#cb37-14"></a><span class="st">  </span><span class="kw">complete</span>(date, <span class="kw">nesting</span>(state, fips),</span>
+<span id="cb37-15"><a href="visualizing-geographic-data-without-maps.html#cb37-15"></a>           <span class="dt">fill =</span> <span class="kw">list</span>(<span class="dt">positive_incidents =</span> <span class="dv">0</span>, <span class="dt">negative_incidents =</span> <span class="dv">0</span>, <span class="dt">death_incidents =</span> <span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-16"><a href="visualizing-geographic-data-without-maps.html#cb37-16"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">test_incidents =</span> <span class="kw">pmap_dbl</span>(<span class="kw">list</span>(positive_incidents, negative_incidents), <span class="op">~</span><span class="st"> </span><span class="kw">sum</span>(..., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)),</span>
+<span id="cb37-17"><a href="visualizing-geographic-data-without-maps.html#cb37-17"></a>         <span class="dt">pos_pct =</span> positive_incidents <span class="op">/</span><span class="st"> </span>test_incidents) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-18"><a href="visualizing-geographic-data-without-maps.html#cb37-18"></a><span class="st">  </span><span class="kw">replace_na</span>(<span class="kw">list</span>(<span class="dt">positive =</span> <span class="dv">0</span>, <span class="dt">negative =</span> <span class="dv">0</span>, <span class="dt">death =</span> <span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb37-19"><a href="visualizing-geographic-data-without-maps.html#cb37-19"></a><span class="st">  </span><span class="kw">arrange</span>(date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-20"><a href="visualizing-geographic-data-without-maps.html#cb37-20"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">ends_with</span>(<span class="st">&quot;_incidents&quot;</span>)), <span class="kw">list</span>(<span class="dt">ma7 =</span> <span class="op">~</span><span class="st"> </span><span class="kw">rollmean</span>(., <span class="dt">k =</span> <span class="dv">7</span>, <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">align =</span> <span class="st">&quot;right&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-21"><a href="visualizing-geographic-data-without-maps.html#cb37-21"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">ends_with</span>(<span class="st">&quot;_incidents&quot;</span>)), na_if, <span class="dv">0</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-22"><a href="visualizing-geographic-data-without-maps.html#cb37-22"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">positive_pct_ma7 =</span> positive_incidents_ma7 <span class="op">/</span><span class="st"> </span>test_incidents_ma7) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-23"><a href="visualizing-geographic-data-without-maps.html#cb37-23"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-24"><a href="visualizing-geographic-data-without-maps.html#cb37-24"></a><span class="st">  </span><span class="kw">filter</span>(date <span class="op">&gt;=</span><span class="st"> &quot;2020-03-15&quot;</span>, state <span class="op">%in%</span><span class="st"> </span>US_states)</span>
+<span id="cb37-25"><a href="visualizing-geographic-data-without-maps.html#cb37-25"></a></span>
+<span id="cb37-26"><a href="visualizing-geographic-data-without-maps.html#cb37-26"></a><span class="kw">glimpse</span>(ictp)</span></code></pre></div>
+<pre><code>## Rows: 14,790
+## Columns: 26
+## $ date                   &lt;date&gt; 2020-03-15, 2020-03-15, 2020-03-15, 2020-03-1…
+## $ state                  &lt;chr&gt; &quot;AK&quot;, &quot;AL&quot;, &quot;AR&quot;, &quot;AZ&quot;, &quot;CA&quot;, &quot;CO&quot;, &quot;CT&quot;, &quot;DC&quot;…
+## $ fips                   &lt;chr&gt; &quot;00002&quot;, &quot;00001&quot;, &quot;00005&quot;, &quot;00004&quot;, &quot;00006&quot;, &quot;…
+## $ positive               &lt;dbl&gt; 0, 12, 16, 12, 293, 131, 20, 16, 6, 91, 99, 2,…
+## $ negative               &lt;dbl&gt; 144, 28, 103, 121, 916, 627, 125, 79, 36, 678,…
+## $ death                  &lt;dbl&gt; 0, 0, 0, 0, 5, 1, 0, 0, 0, 4, 1, 0, 0, 0, 0, 0…
+## $ pending                &lt;int&gt; NA, 46, 30, 50, NA, NA, NA, 20, 32, 454, NA, N…
+## $ hospitalized           &lt;int&gt; 1, NA, NA, 36, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ hospitalizedCurrently  &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ recovered              &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ inIcuCumulative        &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ inIcuCurrently         &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ onVentilatorCurrently  &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ onVentilatorCumulative &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ dateChecked            &lt;dttm&gt; 2020-03-13 16:30:00, 2020-03-15 14:12:00, 202…
+## $ dataQualityGrade       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ positive_incidents     &lt;dbl&gt; NA, 6, 4, NA, 41, NA, 9, 6, NA, 40, 33, NA, 1,…
+## $ negative_incidents     &lt;dbl&gt; NA, 6, 38, NA, NA, NA, NA, 30, NA, 200, NA, NA…
+## $ death_incidents        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 1, NA, NA,…
+## $ test_incidents         &lt;dbl&gt; NA, 12, 42, NA, 41, NA, 9, 36, NA, 240, 33, NA…
+## $ pos_pct                &lt;dbl&gt; NaN, 0.50000000, 0.09523810, NaN, 1.00000000, …
+## $ positive_incidents_ma7 &lt;dbl&gt; 0.0000000, 1.7142857, 2.2857143, 1.0000000, 29…
+## $ negative_incidents_ma7 &lt;dbl&gt; 18.571429, 4.000000, 13.857143, 11.000000, 64.…
+## $ death_incidents_ma7    &lt;dbl&gt; 0.0000000, 0.0000000, 0.0000000, 0.0000000, 0.…
+## $ test_incidents_ma7     &lt;dbl&gt; 18.5714286, 5.7142857, 16.1428571, 12.0000000,…
+## $ positive_pct_ma7       &lt;dbl&gt; 0.00000000, 0.30000000, 0.14159292, 0.08333333…</code></pre>
+</div>
+<div id="plotting-one-geographic-unit-example-new-york-state" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Plotting one geographic unit (example: New York state)</h2>
+<p>Before plotting, let’s customize the theme so we don’t have to do so repeatedly for ever plot.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="visualizing-geographic-data-without-maps.html#cb39-1"></a>theme_light2 &lt;-<span class="st">  </span><span class="kw">theme_light</span>() <span class="op">+</span></span>
+<span id="cb39-2"><a href="visualizing-geographic-data-without-maps.html#cb39-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb39-3"><a href="visualizing-geographic-data-without-maps.html#cb39-3"></a>        <span class="dt">panel.grid.major.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb39-4"><a href="visualizing-geographic-data-without-maps.html#cb39-4"></a>        <span class="dt">panel.grid.minor =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb39-5"><a href="visualizing-geographic-data-without-maps.html#cb39-5"></a>        <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">-90</span>),</span>
+<span id="cb39-6"><a href="visualizing-geographic-data-without-maps.html#cb39-6"></a>        <span class="dt">strip.background =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb39-7"><a href="visualizing-geographic-data-without-maps.html#cb39-7"></a>        <span class="dt">strip.text =</span> <span class="kw">element_text</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb39-8"><a href="visualizing-geographic-data-without-maps.html#cb39-8"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p>Let’s start by plotting confirmed positive cases and deaths in a single state. As you can see by the vertical bars, these data are fairly noisy. We also know that under-reporting is common around weekends. To address both of these issues, we include a line for rolling 7-day means. To facilitate interpretation, we include another line for the proportion of positive tests. Confirmed positive cases and COVID-19 deaths depend on testing–with insufficient tests, these numbers are under-counted. Heuristically, when 10% or fewer tests return positive, testing is considered sufficient.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="visualizing-geographic-data-without-maps.html#cb40-1"></a>g &lt;-<span class="st"> </span>ictp <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-2"><a href="visualizing-geographic-data-without-maps.html#cb40-2"></a><span class="st">  </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;NY&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-3"><a href="visualizing-geographic-data-without-maps.html#cb40-3"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date))</span>
+<span id="cb40-4"><a href="visualizing-geographic-data-without-maps.html#cb40-4"></a></span>
+<span id="cb40-5"><a href="visualizing-geographic-data-without-maps.html#cb40-5"></a>g <span class="op">+</span><span class="st"> </span></span>
+<span id="cb40-6"><a href="visualizing-geographic-data-without-maps.html#cb40-6"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">y =</span> positive_incidents, <span class="dt">fill =</span> <span class="st">&quot;positive_incidents&quot;</span>), <span class="dt">width =</span> <span class="dv">1</span>, <span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">+</span></span>
+<span id="cb40-7"><a href="visualizing-geographic-data-without-maps.html#cb40-7"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">y =</span> death_incidents, <span class="dt">fill =</span> <span class="st">&quot;death_incidents&quot;</span>), <span class="dt">width =</span> <span class="dv">1</span>, <span class="dt">alpha =</span> <span class="fl">.7</span>) <span class="op">+</span></span>
+<span id="cb40-8"><a href="visualizing-geographic-data-without-maps.html#cb40-8"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> positive_incidents_ma7, <span class="dt">color =</span> <span class="st">&quot;positive_incidents&quot;</span>), <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb40-9"><a href="visualizing-geographic-data-without-maps.html#cb40-9"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> death_incidents_ma7, <span class="dt">color =</span> <span class="st">&quot;death_incidents&quot;</span>), <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb40-10"><a href="visualizing-geographic-data-without-maps.html#cb40-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> (<span class="dv">1000</span><span class="op">*</span><span class="dv">10</span>)<span class="op">^</span>positive_pct_ma7, <span class="dt">color =</span> <span class="st">&quot;pos_pct_ma7&quot;</span>), <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb40-11"><a href="visualizing-geographic-data-without-maps.html#cb40-11"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> scales<span class="op">::</span><span class="kw">pseudo_log_trans</span>(<span class="dt">base =</span> <span class="dv">10</span>),</span>
+<span id="cb40-12"><a href="visualizing-geographic-data-without-maps.html#cb40-12"></a>                     <span class="dt">name =</span> <span class="st">&quot;Incidents (log 10 scale)&quot;</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>),</span>
+<span id="cb40-13"><a href="visualizing-geographic-data-without-maps.html#cb40-13"></a>                     <span class="dt">sec.axis =</span> <span class="kw">sec_axis</span>(<span class="op">~</span><span class="kw">log</span>(., <span class="dt">base =</span> (<span class="dv">1000</span><span class="op">*</span><span class="dv">10</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(.<span class="dv">1</span>, <span class="fl">.9</span>, <span class="fl">.2</span>),</span>
+<span id="cb40-14"><a href="visualizing-geographic-data-without-maps.html#cb40-14"></a>                                         <span class="dt">name =</span> <span class="st">&quot;Positive Test Rate (%, 7-day moving average)&quot;</span>)) <span class="op">+</span></span>
+<span id="cb40-15"><a href="visualizing-geographic-data-without-maps.html#cb40-15"></a><span class="st">  </span><span class="kw">scale_fill_viridis_d</span>() <span class="op">+</span></span>
+<span id="cb40-16"><a href="visualizing-geographic-data-without-maps.html#cb40-16"></a><span class="st">  </span><span class="kw">scale_color_viridis_d</span>() <span class="op">+</span></span>
+<span id="cb40-17"><a href="visualizing-geographic-data-without-maps.html#cb40-17"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">alpha =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb40-18"><a href="visualizing-geographic-data-without-maps.html#cb40-18"></a><span class="st">  </span>theme_light2</span></code></pre></div>
+<p><img src="more_visualization_files/figure-html/plot%20WA-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plotting-multiple-geographic-units-example-all-us-states" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Plotting multiple geographic units (example: all US states)</h2>
+<p>Now let’s plot all US states (and DC) simultaneously. To situate these states in their approximate geographic context, we use the {geofacet} package. This package provides a convenient way to arrange small multiples in a grid that correspond to their relative geographic positions. Because these small multiples have less area than the single-state plot, we don’t include daily incidents and instead focus only on 7-day rolling averages.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="visualizing-geographic-data-without-maps.html#cb41-1"></a>g_state &lt;-<span class="st"> </span>ictp <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-2"><a href="visualizing-geographic-data-without-maps.html#cb41-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date))</span>
+<span id="cb41-3"><a href="visualizing-geographic-data-without-maps.html#cb41-3"></a></span>
+<span id="cb41-4"><a href="visualizing-geographic-data-without-maps.html#cb41-4"></a>g_state <span class="op">+</span><span class="st"> </span></span>
+<span id="cb41-5"><a href="visualizing-geographic-data-without-maps.html#cb41-5"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> positive_incidents, <span class="dt">color =</span> <span class="st">&quot;positive_incidents&quot;</span>), <span class="dt">alpha =</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb41-6"><a href="visualizing-geographic-data-without-maps.html#cb41-6"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> death_incidents, <span class="dt">color =</span> <span class="st">&quot;death_incidents&quot;</span>), <span class="dt">alpha =</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb41-7"><a href="visualizing-geographic-data-without-maps.html#cb41-7"></a><span class="st">  </span><span class="kw">geom_area</span>(<span class="kw">aes</span>(<span class="dt">y =</span> positive_incidents_ma7, <span class="dt">fill =</span> <span class="st">&quot;positive_incidents&quot;</span>), <span class="dt">alpha =</span> <span class="fl">.75</span>) <span class="op">+</span></span>
+<span id="cb41-8"><a href="visualizing-geographic-data-without-maps.html#cb41-8"></a><span class="st">  </span><span class="kw">geom_area</span>(<span class="kw">aes</span>(<span class="dt">y =</span> death_incidents_ma7, <span class="dt">fill =</span> <span class="st">&quot;death_incidents&quot;</span>), <span class="dt">alpha =</span> <span class="fl">.8</span>) <span class="op">+</span></span>
+<span id="cb41-9"><a href="visualizing-geographic-data-without-maps.html#cb41-9"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> (<span class="dv">1000</span><span class="op">*</span><span class="dv">10</span>)<span class="op">^</span>positive_pct_ma7, <span class="dt">color =</span> <span class="st">&quot;pos_pct_ma7&quot;</span>)) <span class="op">+</span></span>
+<span id="cb41-10"><a href="visualizing-geographic-data-without-maps.html#cb41-10"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> scales<span class="op">::</span><span class="kw">pseudo_log_trans</span>(<span class="dt">base =</span> <span class="dv">10</span>),</span>
+<span id="cb41-11"><a href="visualizing-geographic-data-without-maps.html#cb41-11"></a>                     <span class="dt">name =</span> <span class="st">&quot;Incidents (7-day moving average, log 10 scale)&quot;</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>),</span>
+<span id="cb41-12"><a href="visualizing-geographic-data-without-maps.html#cb41-12"></a>                     <span class="dt">sec.axis =</span> <span class="kw">sec_axis</span>(<span class="op">~</span><span class="kw">log</span>(., <span class="dt">base =</span> (<span class="dv">1000</span><span class="op">*</span><span class="dv">10</span>)), <span class="dt">breaks =</span> <span class="kw">seq</span>(.<span class="dv">1</span>, <span class="fl">.9</span>, <span class="fl">.2</span>),</span>
+<span id="cb41-13"><a href="visualizing-geographic-data-without-maps.html#cb41-13"></a>                                         <span class="dt">name =</span> <span class="st">&quot;Positive Test Rate (%, 7-day moving average)&quot;</span>)) <span class="op">+</span></span>
+<span id="cb41-14"><a href="visualizing-geographic-data-without-maps.html#cb41-14"></a><span class="st">  </span><span class="kw">scale_fill_viridis_d</span>() <span class="op">+</span></span>
+<span id="cb41-15"><a href="visualizing-geographic-data-without-maps.html#cb41-15"></a><span class="st">  </span><span class="kw">scale_color_viridis_d</span>() <span class="op">+</span></span>
+<span id="cb41-16"><a href="visualizing-geographic-data-without-maps.html#cb41-16"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">alpha =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb41-17"><a href="visualizing-geographic-data-without-maps.html#cb41-17"></a><span class="st">  </span>geofacet<span class="op">::</span><span class="kw">facet_geo</span>(<span class="op">~</span><span class="st"> </span>state, <span class="dt">label =</span> <span class="st">&quot;state&quot;</span>, <span class="dt">move_axes =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb41-18"><a href="visualizing-geographic-data-without-maps.html#cb41-18"></a><span class="st">  </span>theme_light2</span></code></pre></div>
+<p><img src="more_visualization_files/figure-html/plot%20US%20states-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plotting-multiple-geographic-units-example-all-washington-state-counties" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Plotting multiple geographic units (example: all Washington state counties)</h2>
+<p>We can do something similar at a county level within states using JHU data, which doesn’t include testing information. At the county level, the data are even noisier.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="visualizing-geographic-data-without-maps.html#cb42-1"></a>g_wa &lt;-<span class="st"> </span>iusa <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-2"><a href="visualizing-geographic-data-without-maps.html#cb42-2"></a><span class="st">  </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;Washington&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-3"><a href="visualizing-geographic-data-without-maps.html#cb42-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">code_fips =</span> <span class="kw">substr</span>(fips, <span class="dv">3</span>, <span class="dv">5</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-4"><a href="visualizing-geographic-data-without-maps.html#cb42-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date))</span>
+<span id="cb42-5"><a href="visualizing-geographic-data-without-maps.html#cb42-5"></a></span>
+<span id="cb42-6"><a href="visualizing-geographic-data-without-maps.html#cb42-6"></a>g_wa <span class="op">+</span><span class="st"> </span></span>
+<span id="cb42-7"><a href="visualizing-geographic-data-without-maps.html#cb42-7"></a><span class="st">  </span><span class="kw">geom_area</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ma7, <span class="dt">fill =</span> subset), <span class="dt">alpha =</span> <span class="fl">.75</span>) <span class="op">+</span></span>
+<span id="cb42-8"><a href="visualizing-geographic-data-without-maps.html#cb42-8"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> scales<span class="op">::</span><span class="kw">pseudo_log_trans</span>(<span class="dt">base =</span> <span class="dv">10</span>),</span>
+<span id="cb42-9"><a href="visualizing-geographic-data-without-maps.html#cb42-9"></a>                   <span class="dt">name =</span> <span class="st">&quot;Incidents (7-day moving average, log 10 scale)&quot;</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>)) <span class="op">+</span></span>
+<span id="cb42-10"><a href="visualizing-geographic-data-without-maps.html#cb42-10"></a><span class="st">  </span><span class="kw">scale_color_viridis_d</span>(<span class="dt">direction =</span> <span class="dv">-1</span>) <span class="op">+</span></span>
+<span id="cb42-11"><a href="visualizing-geographic-data-without-maps.html#cb42-11"></a><span class="st">  </span><span class="kw">scale_fill_viridis_d</span>(<span class="dt">direction =</span> <span class="dv">-1</span>) <span class="op">+</span></span>
+<span id="cb42-12"><a href="visualizing-geographic-data-without-maps.html#cb42-12"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">alpha =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb42-13"><a href="visualizing-geographic-data-without-maps.html#cb42-13"></a><span class="st">  </span><span class="kw">facet_geo</span>(<span class="op">~</span><span class="st"> </span>county, <span class="dt">grid =</span> <span class="st">&quot;us_wa_counties_grid1&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">move_axes =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb42-14"><a href="visualizing-geographic-data-without-maps.html#cb42-14"></a><span class="st">  </span>theme_light2</span></code></pre></div>
+<p><img src="more_visualization_files/figure-html/plot%20WA%20counties-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="extending-geographic-facets-to-other-regions" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Extending geographic facets to other regions</h2>
+<p>Many additional grids are built-in to {geofacet}.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="visualizing-geographic-data-without-maps.html#cb43-1"></a><span class="kw">get_grid_names</span>()</span></code></pre></div>
+<pre><code>##   [1] &quot;us_state_grid1&quot;                           
+##   [2] &quot;us_state_grid2&quot;                           
+##   [3] &quot;eu_grid1&quot;                                 
+##   [4] &quot;aus_grid1&quot;                                
+##   [5] &quot;sa_prov_grid1&quot;                            
+##   [6] &quot;gb_london_boroughs_grid&quot;                  
+##   [7] &quot;nhs_scot_grid&quot;                            
+##   [8] &quot;india_grid1&quot;                              
+##   [9] &quot;india_grid2&quot;                              
+##  [10] &quot;argentina_grid1&quot;                          
+##  [11] &quot;br_states_grid1&quot;                          
+##  [12] &quot;sea_grid1&quot;                                
+##  [13] &quot;mys_grid1&quot;                                
+##  [14] &quot;fr_regions_grid1&quot;                         
+##  [15] &quot;de_states_grid1&quot;                          
+##  [16] &quot;us_or_counties_grid1&quot;                     
+##  [17] &quot;us_wa_counties_grid1&quot;                     
+##  [18] &quot;us_in_counties_grid1&quot;                     
+##  [19] &quot;us_in_central_counties_grid1&quot;             
+##  [20] &quot;se_counties_grid1&quot;                        
+##  [21] &quot;sf_bay_area_counties_grid1&quot;               
+##  [22] &quot;ua_region_grid1&quot;                          
+##  [23] &quot;mx_state_grid1&quot;                           
+##  [24] &quot;mx_state_grid2&quot;                           
+##  [25] &quot;scotland_local_authority_grid1&quot;           
+##  [26] &quot;us_state_without_DC_grid1&quot;                
+##  [27] &quot;italy_grid1&quot;                              
+##  [28] &quot;italy_grid2&quot;                              
+##  [29] &quot;be_province_grid1&quot;                        
+##  [30] &quot;us_state_grid3&quot;                           
+##  [31] &quot;jp_prefs_grid1&quot;                           
+##  [32] &quot;ng_state_grid1&quot;                           
+##  [33] &quot;bd_upazila_grid1&quot;                         
+##  [34] &quot;spain_prov_grid1&quot;                         
+##  [35] &quot;ch_cantons_grid1&quot;                         
+##  [36] &quot;ch_cantons_grid2&quot;                         
+##  [37] &quot;china_prov_grid1&quot;                         
+##  [38] &quot;world_86countries_grid&quot;                   
+##  [39] &quot;se_counties_grid2&quot;                        
+##  [40] &quot;uk_regions1&quot;                              
+##  [41] &quot;us_state_contiguous_grid1&quot;                
+##  [42] &quot;sk_province_grid1&quot;                        
+##  [43] &quot;ch_aargau_districts_grid1&quot;                
+##  [44] &quot;jo_gov_grid1&quot;                             
+##  [45] &quot;spain_ccaa_grid1&quot;                         
+##  [46] &quot;spain_prov_grid2&quot;                         
+##  [47] &quot;world_countries_grid1&quot;                    
+##  [48] &quot;br_states_grid2&quot;                          
+##  [49] &quot;china_city_grid1&quot;                         
+##  [50] &quot;kr_seoul_district_grid1&quot;                  
+##  [51] &quot;nz_regions_grid1&quot;                         
+##  [52] &quot;sl_regions_grid1&quot;                         
+##  [53] &quot;us_census_div_grid1&quot;                      
+##  [54] &quot;ar_tucuman_province_grid1&quot;                
+##  [55] &quot;us_nh_counties_grid1&quot;                     
+##  [56] &quot;china_prov_grid2&quot;                         
+##  [57] &quot;pl_voivodeships_grid1&quot;                    
+##  [58] &quot;us_ia_counties_grid1&quot;                     
+##  [59] &quot;us_id_counties_grid1&quot;                     
+##  [60] &quot;ar_cordoba_dep_grid1&quot;                     
+##  [61] &quot;us_fl_counties_grid1&quot;                     
+##  [62] &quot;ar_buenosaires_communes_grid1&quot;            
+##  [63] &quot;nz_regions_grid2&quot;                         
+##  [64] &quot;oecd_grid1&quot;                               
+##  [65] &quot;ec_prov_grid1&quot;                            
+##  [66] &quot;nl_prov_grid1&quot;                            
+##  [67] &quot;ca_prov_grid1&quot;                            
+##  [68] &quot;us_nc_counties_grid1&quot;                     
+##  [69] &quot;mx_ciudad_prov_grid1&quot;                     
+##  [70] &quot;bg_prov_grid1&quot;                            
+##  [71] &quot;us_hhs_regions_grid1&quot;                     
+##  [72] &quot;tw_counties_grid1&quot;                        
+##  [73] &quot;tw_counties_grid2&quot;                        
+##  [74] &quot;af_prov_grid1&quot;                            
+##  [75] &quot;us_mi_counties_grid1&quot;                     
+##  [76] &quot;pe_prov_grid1&quot;                            
+##  [77] &quot;sa_prov_grid2&quot;                            
+##  [78] &quot;mx_state_grid3&quot;                           
+##  [79] &quot;cn_bj_districts_grid1&quot;                    
+##  [80] &quot;us_va_counties_grid1&quot;                     
+##  [81] &quot;us_mo_counties_grid1&quot;                     
+##  [82] &quot;cl_santiago_prov_grid1&quot;                   
+##  [83] &quot;us_tx_capcog_counties_grid1&quot;              
+##  [84] &quot;sg_planning_area_grid1&quot;                   
+##  [85] &quot;in_state_ut_grid1&quot;                        
+##  [86] &quot;cn_fujian_prov_grid1&quot;                     
+##  [87] &quot;ca_quebec_electoral_districts_grid1&quot;      
+##  [88] &quot;nl_prov_grid2&quot;                            
+##  [89] &quot;cn_bj_districts_grid2&quot;                    
+##  [90] &quot;ar_santiago_del_estero_prov_grid1&quot;        
+##  [91] &quot;ar_formosa_prov_grid1&quot;                    
+##  [92] &quot;ar_chaco_prov_grid1&quot;                      
+##  [93] &quot;ar_catamarca_prov_grid1&quot;                  
+##  [94] &quot;ar_jujuy_prov_grid1&quot;                      
+##  [95] &quot;ar_neuquen_prov_grid1&quot;                    
+##  [96] &quot;ar_san_luis_prov_grid1&quot;                   
+##  [97] &quot;ar_san_juan_prov_grid1&quot;                   
+##  [98] &quot;ar_santa_fe_prov_grid1&quot;                   
+##  [99] &quot;ar_la_rioja_prov_grid1&quot;                   
+## [100] &quot;ar_mendoza_prov_grid1&quot;                    
+## [101] &quot;ar_salta_prov_grid1&quot;                      
+## [102] &quot;ar_rio_negro_prov_grid1&quot;                  
+## [103] &quot;uy_departamentos_grid1&quot;                   
+## [104] &quot;ar_buenos_aires_prov_electoral_dist_grid1&quot;
+## [105] &quot;europe_countries_grid1&quot;                   
+## [106] &quot;argentina_grid2&quot;                          
+## [107] &quot;us_state_without_DC_grid2&quot;                
+## [108] &quot;jp_prefs_grid2&quot;                           
+## [109] &quot;na_regions_grid1&quot;                         
+## [110] &quot;mm_state_grid1&quot;                           
+## [111] &quot;us_state_with_DC_PR_grid1&quot;                
+## [112] &quot;fr_departements_grid1&quot;                    
+## [113] &quot;ar_salta_prov_grid2&quot;                      
+## [114] &quot;ie_counties_grid1&quot;                        
+## [115] &quot;sg_regions_grid1&quot;                         
+## [116] &quot;us_ny_counties_grid1&quot;                     
+## [117] &quot;ru_federal_subjects_grid1&quot;                
+## [118] &quot;us_ca_counties_grid1&quot;                     
+## [119] &quot;lk_districts_grid1&quot;                       
+## [120] &quot;us_state_without_DC_grid3&quot;                
+## [121] &quot;co_cali_subdivisions_grid1&quot;               
+## [122] &quot;us_in_northern_counties_grid1&quot;            
+## [123] &quot;italy_grid3&quot;                              
+## [124] &quot;us_state_with_DC_PR_grid2&quot;                
+## [125] &quot;us_state_grid7&quot;                           
+## [126] &quot;sg_planning_area_grid2&quot;                   
+## [127] &quot;ch_cantons_fl_grid1&quot;                      
+## [128] &quot;europe_countries_grid2&quot;                   
+## [129] &quot;us_states_territories_grid1&quot;              
+## [130] &quot;us_tn_counties_grid1&quot;                     
+## [131] &quot;us_il_chicago_community_areas_grid1&quot;      
+## [132] &quot;us_state_with_DC_PR_grid3&quot;                
+## [133] &quot;in_state_ut_grid2&quot;                        
+## [134] &quot;at_states_grid1&quot;                          
+## [135] &quot;us_pa_counties_grid1&quot;                     
+## [136] &quot;us_oh_counties_grid1&quot;                     
+## [137] &quot;fr_departements_grid2&quot;                    
+## [138] &quot;us_wi_counties_grid1&quot;                     
+## [139] &quot;africa_countries_grid1&quot;                   
+## [140] &quot;no_counties_grid1&quot;                        
+## [141] &quot;tr_provinces_grid1&quot;</code></pre>
+<p>For states or other regions that aren’t yet included in {geofacet}’s grids, you can construct one using the <a href="https://hafen.github.io/grid-designer/">Geo Grid Designer</a>. For more information, see <a href="https://cran.r-project.org/package=geofacet">the geofacet page on CRAN</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="map-visualizations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-replication-rate-r-0.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

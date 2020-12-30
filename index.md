@@ -1,0 +1,65 @@
+--- 
+title: "sars2pack: Understanding COVID-19 with R and Public Data"
+bibliography: ["REFERENCES.bib"]
+
+date: "2020-12-30"
+knit: "bookdown::preview_chapter"
+site: "bookdown::bookdown_site"
+link-citations: true
+output:
+  bookdown::gitbook:
+    highlight: tango
+    split_by: chapter
+    fig_caption: yes 
+
+github-repo: seandavi/sars2pack-book
+twitter-handle: seandavis12
+cover-image: images/cover.png
+
+documentclass: book
+
+author: 
+  - Vincent J. Carey^[Harard Medical School, Channing Laboratory, Brigham and Women's Hospital]
+  - Charles Morefield^[Arctan, Inc.]
+  - John Mallery^[MIT Artificial Intelligence Laboratory]
+  - Sean Davis^[National Cancer Institute, National Institutes of Health]
+---
+
+# Preface {-}
+
+On January 30, 2020, the World Health Organization declared coronavirus disease
+2019 (COVID-19) a Public Health Emergency of International concern (PHEIC)
+and within six weeks had characterized the outbreak as a pandemic. Compared
+to the 2003-2004 severe acute respiratory syndrome (SARS) PHEIC, the
+COVID-19 pandemic spreads more quickly and with a much higher death toll.
+However, the current pandemic is occurring in a more digital and
+interconnected world. Traditional public health organizations as well as
+data-mature organizations not traditionally involved directly in public
+health have rapidly developed digital disease surveillance infrastructuree
+that provides nearly realtime epidemic tracking data. These data resources
+have proven invaluable to understanding disease spread, to drive
+non-pharmacologic intervention (NPI), and, when combined with additional
+data resources, to project impacts to communities and healthcare systems
+around the world. Even as the urgency of the initial "hammer" of the
+COVID-19 pandemic begins to abate, the need for timely, robust, and granular
+datasets will inform business, policy, and even personal decisions for
+months or even years to come. This package provides documentation and
+one-function access to highly-cited COVID-19 datasets and secondary data
+that allow real-time analysis, visualization, and interpretation of the
+state of COVID-19 at a community, national, or international level.
+    
+The accompanying [`sars2pack` R package](https://github.com/seandavi/sars2pack) seeks to:
+
+* Collect COVID-19 related public health and disease tracking
+resourcesand provide principled approach date reuse and
+reproducible computational research.
+* Provide a data science environment for researchers, media,
+policy makers, and data scientists to collaborate while promoting
+reproducible computational research best practices.
+* Capitalize on the large, existing multidisciplinary data science
+workforce already familiar with the R programming environment.
+* Create opportunities for individuals not well-versed in data
+science to learn and experiment with COVID-19 datasets.
+* Incorporate examplar workflows that leverage the extensive R
+data science ecosystem to visualize, analyze, and integrate
+COVID-19 data resources.

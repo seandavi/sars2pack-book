@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 The Replication rate, \(R_0\) | sars2pack: Understanding COVID-19 with R and Public Data</title>
+  <meta name="description" content="Chapter 7 The Replication rate, \(R_0\) | sars2pack: Understanding COVID-19 with R and Public Data" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 The Replication rate, \(R_0\) | sars2pack: Understanding COVID-19 with R and Public Data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="images/cover.png" />
+  
+  <meta name="github-repo" content="seandavi/sars2pack-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 The Replication rate, \(R_0\) | sars2pack: Understanding COVID-19 with R and Public Data" />
+  <meta name="twitter:site" content="@seandavis12" />
+  
+  <meta name="twitter:image" content="images/cover.png" />
+
+<meta name="author" content="Vincent J. Carey" />
+<meta name="author" content="Charles Morefield" />
+<meta name="author" content="John Mallery" />
+<meta name="author" content="Sean Davis" />
+
+
+<meta name="date" content="2020-12-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="visualizing-geographic-data-without-maps.html"/>
+<link rel="next" href="how-to-add-a-new-dataset-to-sars2pack.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/jsoneditor-5.25.6/jsoneditor.min.css" rel="stylesheet" />
+<script src="libs/jsoneditor-5.25.6/jsoneditor.min.js"></script>
+<script src="libs/jsonedit-binding-3.0.0/jsonedit.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#installation"><i class="fa fa-check"></i><b>1.1</b> Installation</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#usage"><i class="fa fa-check"></i><b>1.2</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="available-datasets.html"><a href="available-datasets.html"><i class="fa fa-check"></i><b>2</b> Available datasets</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="available-datasets.html"><a href="available-datasets.html#searchable-dataset-catalog"><i class="fa fa-check"></i><b>2.1</b> Searchable dataset catalog</a></li>
+<li class="chapter" data-level="2.2" data-path="available-datasets.html"><a href="available-datasets.html#dataset-details"><i class="fa fa-check"></i><b>2.2</b> Dataset details</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="case-tracking-data.html"><a href="case-tracking-data.html"><i class="fa fa-check"></i><b>3</b> Case tracking data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="case-tracking-data.html"><a href="case-tracking-data.html#compare-us-datasets"><i class="fa fa-check"></i><b>3.1</b> Compare US datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="how-much-testing.html"><a href="how-much-testing.html"><i class="fa fa-check"></i><b>4</b> How much testing?</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="how-much-testing.html"><a href="how-much-testing.html#outline-of-the-problem"><i class="fa fa-check"></i><b>4.1</b> Outline of the problem</a></li>
+<li class="chapter" data-level="4.2" data-path="how-much-testing.html"><a href="how-much-testing.html#motivation-for-visualization"><i class="fa fa-check"></i><b>4.2</b> Motivation for visualization</a></li>
+<li class="chapter" data-level="4.3" data-path="how-much-testing.html"><a href="how-much-testing.html#intuitive-visualization-of-amount-of-testing"><i class="fa fa-check"></i><b>4.3</b> Intuitive visualization of amount of testing</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="map-visualizations.html"><a href="map-visualizations.html"><i class="fa fa-check"></i><b>5</b> Map visualizations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="map-visualizations.html"><a href="map-visualizations.html#interactive-maps"><i class="fa fa-check"></i><b>5.1</b> Interactive maps</a></li>
+<li class="chapter" data-level="5.2" data-path="map-visualizations.html"><a href="map-visualizations.html#united-states"><i class="fa fa-check"></i><b>5.2</b> United States</a></li>
+<li class="chapter" data-level="5.3" data-path="map-visualizations.html"><a href="map-visualizations.html#small-multiples"><i class="fa fa-check"></i><b>5.3</b> Small multiples</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="map-visualizations.html"><a href="map-visualizations.html#united-states-1"><i class="fa fa-check"></i><b>5.3.1</b> United states</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html"><i class="fa fa-check"></i><b>6</b> Visualizing geographic data without maps</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#prepping-the-data-from-sars2pack"><i class="fa fa-check"></i><b>6.1</b> Prepping the data from sars2pack</a></li>
+<li class="chapter" data-level="6.2" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#plotting-one-geographic-unit-example-new-york-state"><i class="fa fa-check"></i><b>6.2</b> Plotting one geographic unit (example: New York state)</a></li>
+<li class="chapter" data-level="6.3" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#plotting-multiple-geographic-units-example-all-us-states"><i class="fa fa-check"></i><b>6.3</b> Plotting multiple geographic units (example: all US states)</a></li>
+<li class="chapter" data-level="6.4" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#plotting-multiple-geographic-units-example-all-washington-state-counties"><i class="fa fa-check"></i><b>6.4</b> Plotting multiple geographic units (example: all Washington state counties)</a></li>
+<li class="chapter" data-level="6.5" data-path="visualizing-geographic-data-without-maps.html"><a href="visualizing-geographic-data-without-maps.html#extending-geographic-facets-to-other-regions"><i class="fa fa-check"></i><b>6.5</b> Extending geographic facets to other regions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html"><i class="fa fa-check"></i><b>7</b> The Replication rate, <span class="math inline">\(R_0\)</span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#learning-goals-and-objectives"><i class="fa fa-check"></i><b>7.1</b> Learning goals and objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#background"><i class="fa fa-check"></i><b>7.2</b> Background</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#what-is-r_0"><i class="fa fa-check"></i><b>7.2.1</b> What is <span class="math inline">\(R_0\)</span>?</a></li>
+<li class="chapter" data-level="7.2.2" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#what-do-r_0-values-mean"><i class="fa fa-check"></i><b>7.2.2</b> What do <span class="math inline">\(R_0\)</span> values mean?</a></li>
+<li class="chapter" data-level="7.2.3" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#what-variables-contribute-to-r_0"><i class="fa fa-check"></i><b>7.2.3</b> What variables contribute to <span class="math inline">\(R_0\)</span>?</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#real-data-examples"><i class="fa fa-check"></i><b>7.3</b> Real data examples</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#state-of-maryland-in-the-united-states"><i class="fa fa-check"></i><b>7.3.1</b> State of Maryland in the United States</a></li>
+<li class="chapter" data-level="7.3.2" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#state-of-arizona-in-the-united-states"><i class="fa fa-check"></i><b>7.3.2</b> State of Arizona in the United States</a></li>
+<li class="chapter" data-level="7.3.3" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#brazil"><i class="fa fa-check"></i><b>7.3.3</b> Brazil</a></li>
+<li class="chapter" data-level="7.3.4" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#hubei-province"><i class="fa fa-check"></i><b>7.3.4</b> Hubei Province</a></li>
+<li class="chapter" data-level="7.3.5" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#italy"><i class="fa fa-check"></i><b>7.3.5</b> Italy</a></li>
+<li class="chapter" data-level="7.3.6" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#new-york-city"><i class="fa fa-check"></i><b>7.3.6</b> New York City</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#italy-from-jhu-dataset"><i class="fa fa-check"></i><b>7.4</b> Italy from JHU dataset</a></li>
+<li class="chapter" data-level="7.5" data-path="the-replication-rate-r-0.html"><a href="the-replication-rate-r-0.html#simulated-epidemic-model"><i class="fa fa-check"></i><b>7.5</b> Simulated epidemic model</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html"><i class="fa fa-check"></i><b>8</b> How to add a new dataset to <code>sars2pack</code></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#add-an-r-file."><i class="fa fa-check"></i><b>8.1</b> Add an R file.</a></li>
+<li class="chapter" data-level="8.2" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#caching-using-s2p_cached_url"><i class="fa fa-check"></i><b>8.2</b> Caching using s2p_cached_url</a></li>
+<li class="chapter" data-level="8.3" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#add-an-entry-to-catalog.yaml"><i class="fa fa-check"></i><b>8.3</b> Add an entry to <code>catalog.yaml</code></a></li>
+<li class="chapter" data-level="8.4" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#run-the-create_dataset_details-function"><i class="fa fa-check"></i><b>8.4</b> Run the <code>create_dataset_details()</code> function</a></li>
+<li class="chapter" data-level="8.5" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#run-devtoolstest"><i class="fa fa-check"></i><b>8.5</b> Run <code>devtools::test()</code></a></li>
+<li class="chapter" data-level="8.6" data-path="how-to-add-a-new-dataset-to-sars2pack.html"><a href="how-to-add-a-new-dataset-to-sars2pack.html#continue-with-normal-r-pull-request"><i class="fa fa-check"></i><b>8.6</b> Continue with normal R pull request</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="phylogenetic-data.html"><a href="phylogenetic-data.html"><i class="fa fa-check"></i><b>9</b> Phylogenetic data</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="phylogenetic-data.html"><a href="phylogenetic-data.html#notes"><i class="fa fa-check"></i><b>9.1</b> Notes</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">sars2pack: Understanding COVID-19 with R and Public Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-replication-rate-r_0" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> The Replication rate, <span class="math inline">\(R_0\)</span></h1>
+<div id="learning-goals-and-objectives" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Learning goals and objectives</h2>
+<ul>
+<li>Gain an intuitive understanding of <span class="math inline">\(R_0\)</span>.</li>
+<li>Know that the value of <span class="math inline">\(R_0\)</span> determines how quickly a disease spreads or is eliminated.</li>
+<li>Name the three main drivers of <span class="math inline">\(R_0\)</span></li>
+<li>Learn to estimate <span class="math inline">\(R_0\)</span> from data on the number of infections over time occurring in a population.</li>
+</ul>
+</div>
+<div id="background" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Background</h2>
+<p>The replication rate, <span class="math inline">\(R_0\)</span> is a central value in understanding the rate at which a disease is spreading in a susceptible population.</p>
+<div id="what-is-r_0" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> What is <span class="math inline">\(R_0\)</span>?</h3>
+<p><span class="math inline">\(R_0\)</span> is pronounced “R naught.” The <span class="math inline">\(R_0\)</span> value is an estimate of the average number of people who will be infected by one contagious person. It specifically applies to a population of people who are susceptible to the disease (have not been vaccinated and are not immune). If a disease has an <span class="math inline">\(R_0\)</span> of 18, for example, a contagious person will transmit it to an average of 18 other people, assuming that all people in the community are susceptible.</p>
+</div>
+<div id="what-do-r_0-values-mean" class="section level3" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> What do <span class="math inline">\(R_0\)</span> values mean?</h3>
+<p>The <span class="math inline">\(R_0\)</span> value of a disease is important to understanding the dynamics of disease spread. Depending on the <span class="math inline">\(R_0\)</span> value, a disease should follow one of three possible courses in the at-risk community.</p>
+<ul>
+<li>If <span class="math inline">\(R_0\)</span> is less than 1, each existing infection is spread on average to less than one additional person, leading to decline in the number of cases and eventual end to the spread.</li>
+<li>If <span class="math inline">\(R_0\)</span> equals 1, each existing infection causes one new infection, leading to stable infection numbers without increase or decrease with time, on average.</li>
+<li>If <span class="math inline">\(R_0\)</span> is more than 1, each existing infection leads to more than one infection, resulting in growth and potential for epidemic/pandemic conditions.</li>
+</ul>
+<p><em>Importantly, the disease-specific <span class="math inline">\(R_0\)</span> value pplies when each member of the community is fully vulnerable to the disease with</em>:</p>
+<ul>
+<li>no one vaccinated</li>
+<li>no one immune</li>
+<li>no way to control the spread of the disease</li>
+</ul>
+</div>
+<div id="what-variables-contribute-to-r_0" class="section level3" number="7.2.3">
+<h3><span class="header-section-number">7.2.3</span> What variables contribute to <span class="math inline">\(R_0\)</span>?</h3>
+<p>Three main factors impact the <span class="math inline">\(R_0\)</span> value of a disease:</p>
+<ul>
+<li><p><em>Infectious period</em>: The time that an infected person can spread the disease varies from one disease to another. Additional factors such as age of the infected person may affect the period during which a person can infect others. A long period of infectiousness will contribute to a higher <span class="math inline">\(R_0\)</span> value.</p></li>
+<li><p><em>Contact rate</em>: If a person who’s infected with a contagious disease comes into contact with many people who aren’t infected or vaccinated, the disease will spread more quickly. If that person remains at home, in a hospital, or otherwise quarantined while they’re contagious, the disease will spread more slowly. A high contact rate will contribute to a higher <span class="math inline">\(R_0\)</span> value. The corollary, that lower contact rate, can reduce <span class="math inline">\(R_0\)</span> is the basis for <a href="https://www.nytimes.com/article/flatten-curve-coronavirus.html">flattening the curve</a> through <a href="https://en.wikipedia.org/wiki/Social_distancing">social distancing</a>.</p></li>
+<li><p><em>Mode of transmission</em>:
+Airborne illnesses tend to have a higher <span class="math inline">\(R_0\)</span> value than those spread through contact or through bodily fluids.</p></li>
+</ul>
+</div>
+</div>
+<div id="real-data-examples" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Real data examples</h2>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="the-replication-rate-r-0.html#cb45-1"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:MASS&#39;:
+## 
+##     select</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="the-replication-rate-r-0.html#cb50-1"></a><span class="kw">library</span>(magrittr)</span></code></pre></div>
+<p>The software package <em><a href="https://CRAN.R-project.org/package=EpiEstim">EpiEstim</a></em> provides multiple methods
+for estimating the time-varying reproduction number from epidemic
+curves. As a reminder, an epidemic curve typically consists of
+a set of either <em>cumulative</em> or <em>new</em> cases per unit time. In <em>sars2pack</em>,
+we are careful to import all datasets as <em>cumulative</em> counts.</p>
+<div id="state-of-maryland-in-the-united-states" class="section level3" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> State of Maryland in the United States</h3>
+<p>As a starter, we’ll work with my home state, Maryland and examine
+its COVID-19 disease spread over time and then estimate the <span class="math inline">\(R_0\)</span> over
+time to see how successful Marylanders have been with social distancing.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="the-replication-rate-r-0.html#cb51-1"></a>nyt =<span class="st"> </span><span class="kw">nytimes_state_data</span>()</span></code></pre></div>
+<pre><code>## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone &#39;&#39;</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="the-replication-rate-r-0.html#cb53-1"></a><span class="kw">head</span>(nyt)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   date       state      fips  count subset   
+##   &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;    
+## 1 2020-01-21 Washington 00053     1 confirmed
+## 2 2020-01-22 Washington 00053     1 confirmed
+## 3 2020-01-23 Washington 00053     1 confirmed
+## 4 2020-01-24 Illinois   00017     1 confirmed
+## 5 2020-01-24 Washington 00053     1 confirmed
+## 6 2020-01-25 California 00006     1 confirmed</code></pre>
+<p>To contrast the way cumulative vs “incidence” data look, we can look
+at one state cumulatively and the same state in terms of new cases (or
+“incidence”.</p>
+<p>Here, we isolate the state of Maryland and pull out the cumulative cases.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="the-replication-rate-r-0.html#cb55-1"></a>md_cumulative =<span class="st"> </span>nyt <span class="op">%&gt;%</span></span>
+<span id="cb55-2"><a href="the-replication-rate-r-0.html#cb55-2"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(state<span class="op">==</span><span class="st">&#39;Maryland&#39;</span> <span class="op">&amp;</span><span class="st"> </span>subset<span class="op">==</span><span class="st">&#39;confirmed&#39;</span> <span class="op">&amp;</span><span class="st"> </span>count<span class="op">&gt;</span><span class="dv">50</span>)</span></code></pre></div>
+<p>Data from most online sources and all the epidemic curve data
+for which we provide accessors are <em>cumulative</em>. We can add a new
+column to the dataset using <code>add_incidence_column()</code>.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="the-replication-rate-r-0.html#cb56-1"></a>md_full =<span class="st"> </span>md_cumulative <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">add_incidence_column</span>()</span>
+<span id="cb56-2"><a href="the-replication-rate-r-0.html#cb56-2"></a><span class="kw">head</span>(md_full)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 6
+##   date       state    fips  count subset      inc
+##   &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+## 1 2020-03-17 Maryland 00024    57 confirmed    NA
+## 2 2020-03-18 Maryland 00024    85 confirmed    28
+## 3 2020-03-19 Maryland 00024   108 confirmed    23
+## 4 2020-03-20 Maryland 00024   150 confirmed    42
+## 5 2020-03-21 Maryland 00024   195 confirmed    45
+## 6 2020-03-22 Maryland 00024   245 confirmed    50</code></pre>
+<p>Now, plot both using the <code>plot_epicurve()</code> helper function. Note that
+<code>plot_epicurve()</code> returns a ggplot object that can be further manipulated.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="the-replication-rate-r-0.html#cb58-1"></a><span class="kw">library</span>(cowplot)</span></code></pre></div>
+<pre><code>## 
+## ********************************************************</code></pre>
+<pre><code>## Note: As of version 1.0.0, cowplot does not change the</code></pre>
+<pre><code>##   default ggplot2 theme anymore. To recover the previous</code></pre>
+<pre><code>##   behavior, execute:
+##   theme_set(theme_cowplot())</code></pre>
+<pre><code>## ********************************************************</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="the-replication-rate-r-0.html#cb64-1"></a>pcumulative =<span class="st"> </span><span class="kw">plot_epicurve</span>(md_full,<span class="dt">log=</span><span class="ot">FALSE</span>)</span>
+<span id="cb64-2"><a href="the-replication-rate-r-0.html#cb64-2"></a>pincidence  =<span class="st"> </span><span class="kw">plot_epicurve</span>(md_full,<span class="dt">case_column=</span><span class="st">&#39;inc&#39;</span>,<span class="dt">log=</span><span class="ot">FALSE</span>)</span>
+<span id="cb64-3"><a href="the-replication-rate-r-0.html#cb64-3"></a>pcumulative_log =<span class="st"> </span><span class="kw">plot_epicurve</span>(md_full,<span class="dt">log=</span><span class="ot">TRUE</span>)</span>
+<span id="cb64-4"><a href="the-replication-rate-r-0.html#cb64-4"></a>pincidence_log  =<span class="st"> </span><span class="kw">plot_epicurve</span>(md_full,<span class="dt">case_column=</span><span class="st">&#39;inc&#39;</span>,<span class="dt">log=</span><span class="ot">TRUE</span>)</span>
+<span id="cb64-5"><a href="the-replication-rate-r-0.html#cb64-5"></a><span class="kw">print</span>(cowplot<span class="op">::</span><span class="kw">plot_grid</span>(pcumulative,pincidence,</span>
+<span id="cb64-6"><a href="the-replication-rate-r-0.html#cb64-6"></a>                   pcumulative_log,pincidence_log,<span class="dt">ncol=</span><span class="dv">2</span>,</span>
+<span id="cb64-7"><a href="the-replication-rate-r-0.html#cb64-7"></a>                   <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)))</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).
+
+## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<div class="figure">
+<img src="r0_estimates_files/figure-html/abc-1.png" alt="Epidemic curve plots (epicurves) for Maryland. Cumulative cases (A, C) and daily incidence (B, D). Top row (A, B) is linear scale on the y-axis; bottom row (C, D) with y-axis in log scale" width="100%" />
+<p class="caption">
+Epidemic curve plots (epicurves) for Maryland. Cumulative cases (A, C) and daily incidence (B, D). Top row (A, B) is linear scale on the y-axis; bottom row (C, D) with y-axis in log scale
+</p>
+</div>
+<p>The <code>estimate_Rt()</code> is a very lightweight wrapper around the
+<code>EpiEstim::estimate_R()</code> function. For more details on the help,
+take a look at the <em><a href="https://CRAN.R-project.org/package=EpiEstim">EpiEstim</a></em> documentation.</p>
+<p>We are able to use exponential growth and time-dependent models
+with this data, using generation time model from a
+recent <a href="https://annals.org/aim/fullarticle/2762808/incubation-period-coronavirus-disease-2019-covid-19-from-publicly-reported">Annals of Internal Medicine</a> paper.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="the-replication-rate-r-0.html#cb66-1"></a>x =<span class="st"> </span><span class="kw">estimate_Rt</span>(md_full,<span class="dt">method =</span> <span class="st">&#39;parametric_si&#39;</span>,</span>
+<span id="cb66-2"><a href="the-replication-rate-r-0.html#cb66-2"></a>                <span class="dt">config =</span> <span class="kw">list</span>(<span class="dt">mean_si=</span><span class="fl">3.96</span>, <span class="dt">std_si=</span><span class="fl">4.75</span>))</span></code></pre></div>
+<p>Since we are looking for <span class="math inline">\(R_0\)</span> to be less than 1 for the pandemic
+to be dying down, we can look at <span class="math inline">\(R_0\)</span> estimates over time.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="the-replication-rate-r-0.html#cb67-1"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb67-2"><a href="the-replication-rate-r-0.html#cb67-2"></a><span class="kw">ggplot</span>(x,<span class="kw">aes</span>(<span class="dt">x=</span>date_end,<span class="dt">y=</span><span class="st">`</span><span class="dt">Mean(R)</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb67-3"><a href="the-replication-rate-r-0.html#cb67-3"></a><span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="st">`</span><span class="dt">Quantile.0.025(R)</span><span class="st">`</span>,<span class="dt">ymax=</span><span class="st">`</span><span class="dt">Quantile.0.975(R)</span><span class="st">`</span>),<span class="dt">fill=</span><span class="st">&#39;grey75&#39;</span>) <span class="op">+</span></span>
+<span id="cb67-4"><a href="the-replication-rate-r-0.html#cb67-4"></a><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Maryland&#39;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="r0_estimates_files/figure-html/mdEpiestim-1.png" alt="Estimate of R_0 over time in Maryland. The grey coloring represents 95% confidence intervals around the estimate of R_0." width="100%" />
+<p class="caption">
+Estimate of R_0 over time in Maryland. The grey coloring represents 95% confidence intervals around the estimate of R_0.
+</p>
+</div>
+</div>
+<div id="state-of-arizona-in-the-united-states" class="section level3" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> State of Arizona in the United States</h3>
+<p>Arizona shows a somewhat different pattern of pandemic control than Maryland.
+Start by creating a full epicurve dataset for Arizona.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="the-replication-rate-r-0.html#cb68-1"></a>az_full =<span class="st"> </span>nyt <span class="op">%&gt;%</span></span>
+<span id="cb68-2"><a href="the-replication-rate-r-0.html#cb68-2"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(state<span class="op">==</span><span class="st">&#39;Arizona&#39;</span> <span class="op">&amp;</span><span class="st"> </span>subset<span class="op">==</span><span class="st">&#39;confirmed&#39;</span> <span class="op">&amp;</span><span class="st"> </span>count<span class="op">&gt;</span><span class="dv">25</span>) <span class="op">%&gt;%</span></span>
+<span id="cb68-3"><a href="the-replication-rate-r-0.html#cb68-3"></a><span class="st">    </span><span class="kw">add_incidence_column</span>() <span class="co"># defaults suffice here</span></span></code></pre></div>
+<p>Taking a look at the actual counts of cases and incidence can give a
+quick sense of what to expect with regard to <span class="math inline">\(R_0\)</span> over time. Note that
+the <em>absolute number</em> of cases is quite different from Maryland.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="the-replication-rate-r-0.html#cb69-1"></a><span class="kw">library</span>(cowplot)</span>
+<span id="cb69-2"><a href="the-replication-rate-r-0.html#cb69-2"></a>pcumulative =<span class="st"> </span><span class="kw">plot_epicurve</span>(az_full,<span class="dt">log=</span><span class="ot">FALSE</span>)</span>
+<span id="cb69-3"><a href="the-replication-rate-r-0.html#cb69-3"></a>pincidence  =<span class="st"> </span><span class="kw">plot_epicurve</span>(az_full,<span class="dt">case_column=</span><span class="st">&#39;inc&#39;</span>,<span class="dt">log=</span><span class="ot">FALSE</span>)</span>
+<span id="cb69-4"><a href="the-replication-rate-r-0.html#cb69-4"></a>pcumulative_log =<span class="st"> </span><span class="kw">plot_epicurve</span>(az_full,<span class="dt">log=</span><span class="ot">TRUE</span>)</span>
+<span id="cb69-5"><a href="the-replication-rate-r-0.html#cb69-5"></a>pincidence_log  =<span class="st"> </span><span class="kw">plot_epicurve</span>(az_full,<span class="dt">case_column=</span><span class="st">&#39;inc&#39;</span>,<span class="dt">log=</span><span class="ot">TRUE</span>)</span>
+<span id="cb69-6"><a href="the-replication-rate-r-0.html#cb69-6"></a>cowplot<span class="op">::</span><span class="kw">plot_grid</span>(pcumulative,pincidence,</span>
+<span id="cb69-7"><a href="the-replication-rate-r-0.html#cb69-7"></a>                   pcumulative_log,pincidence_log,<span class="dt">ncol=</span><span class="dv">2</span>,</span>
+<span id="cb69-8"><a href="the-replication-rate-r-0.html#cb69-8"></a>                   <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).
+
+## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<div class="figure">
+<img src="r0_estimates_files/figure-html/azEpicurve-1.png" alt="Epidemic curve plots (epicurves) for Arizona. Cumulative cases (A, C) and daily incidence (B, D). Top row (A, B) is linear scale on the y-axis; bottom row (C, D) with y-axis in log scale" width="100%" />
+<p class="caption">
+Epidemic curve plots (epicurves) for Arizona. Cumulative cases (A, C) and daily incidence (B, D). Top row (A, B) is linear scale on the y-axis; bottom row (C, D) with y-axis in log scale
+</p>
+</div>
+<p>Arizona shows a resurgence in infections as evidenced by <span class="math inline">\(R_0\)</span> rising well above 1
+at the beginning of June.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="the-replication-rate-r-0.html#cb71-1"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb71-2"><a href="the-replication-rate-r-0.html#cb71-2"></a>x =<span class="st"> </span><span class="kw">estimate_Rt</span>(az_full,<span class="dt">method =</span> <span class="st">&#39;parametric_si&#39;</span>,</span>
+<span id="cb71-3"><a href="the-replication-rate-r-0.html#cb71-3"></a>                <span class="dt">config =</span> <span class="kw">list</span>(<span class="dt">mean_si=</span><span class="fl">3.96</span>, <span class="dt">std_si=</span><span class="fl">4.75</span>))</span>
+<span id="cb71-4"><a href="the-replication-rate-r-0.html#cb71-4"></a><span class="kw">ggplot</span>(x,<span class="kw">aes</span>(<span class="dt">x=</span>date_end,<span class="dt">y=</span><span class="st">`</span><span class="dt">Mean(R)</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb71-5"><a href="the-replication-rate-r-0.html#cb71-5"></a><span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="st">`</span><span class="dt">Quantile.0.025(R)</span><span class="st">`</span>,<span class="dt">ymax=</span><span class="st">`</span><span class="dt">Quantile.0.975(R)</span><span class="st">`</span>),<span class="dt">fill=</span><span class="st">&#39;grey75&#39;</span>) <span class="op">+</span></span>
+<span id="cb71-6"><a href="the-replication-rate-r-0.html#cb71-6"></a><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Arizona&#39;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="r0_estimates_files/figure-html/azEpiestim-1.png" alt="Estimate of R_0 over time for Arizona. The grey coloring represents 95% confidence intervals around the estimate of R_0." width="100%" />
+<p class="caption">
+Estimate of R_0 over time for Arizona. The grey coloring represents 95% confidence intervals around the estimate of R_0.
+</p>
+</div>
+</div>
+<div id="brazil" class="section level3" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> Brazil</h3>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="the-replication-rate-r-0.html#cb72-1"></a>jhu =<span class="st"> </span><span class="kw">jhu_data</span>()</span></code></pre></div>
+<pre><code>## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone &#39;&#39;
+
+## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone &#39;&#39;
+
+## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone &#39;&#39;</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="the-replication-rate-r-0.html#cb74-1"></a><span class="kw">head</span>(jhu)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 7
+##   ProvinceState CountryRegion   Lat  Long date       count subset   
+##   &lt;chr&gt;         &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;    
+## 1 &lt;NA&gt;          Afghanistan    33.9  67.7 2020-01-22     0 confirmed
+## 2 &lt;NA&gt;          Afghanistan    33.9  67.7 2020-01-23     0 confirmed
+## 3 &lt;NA&gt;          Afghanistan    33.9  67.7 2020-01-24     0 confirmed
+## 4 &lt;NA&gt;          Afghanistan    33.9  67.7 2020-01-25     0 confirmed
+## 5 &lt;NA&gt;          Afghanistan    33.9  67.7 2020-01-26     0 confirmed
+## 6 &lt;NA&gt;          Afghanistan    33.9  67.7 2020-01-27     0 confirmed</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="the-replication-rate-r-0.html#cb76-1"></a>jhu_brazil =<span class="st"> </span>jhu <span class="op">%&gt;%</span></span>
+<span id="cb76-2"><a href="the-replication-rate-r-0.html#cb76-2"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(CountryRegion<span class="op">==</span><span class="st">&#39;Brazil&#39;</span> <span class="op">&amp;</span><span class="st"> </span>subset<span class="op">==</span><span class="st">&#39;confirmed&#39;</span> <span class="op">&amp;</span><span class="st"> </span>count<span class="op">&gt;</span><span class="dv">50</span>) <span class="op">%&gt;%</span></span>
+<span id="cb76-3"><a href="the-replication-rate-r-0.html#cb76-3"></a><span class="st">    </span><span class="kw">add_incidence_column</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="the-replication-rate-r-0.html#cb77-1"></a><span class="kw">plot_epicurve</span>(jhu_brazil,<span class="dt">case_column=</span><span class="st">&#39;inc&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Brazil&#39;</span>, <span class="dt">subtitle =</span> <span class="st">&#39;Daily new cases&#39;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="r0_estimates_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="the-replication-rate-r-0.html#cb79-1"></a>x =<span class="st"> </span><span class="kw">estimate_Rt</span>(jhu_brazil,<span class="dt">method =</span> <span class="st">&#39;parametric_si&#39;</span>,</span>
+<span id="cb79-2"><a href="the-replication-rate-r-0.html#cb79-2"></a>                <span class="dt">config =</span> <span class="kw">list</span>(<span class="dt">mean_si=</span><span class="fl">3.96</span>, <span class="dt">std_si=</span><span class="fl">4.75</span>))</span>
+<span id="cb79-3"><a href="the-replication-rate-r-0.html#cb79-3"></a><span class="kw">ggplot</span>(x,<span class="kw">aes</span>(<span class="dt">x=</span>date_end,<span class="dt">y=</span><span class="st">`</span><span class="dt">Mean(R)</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb79-4"><a href="the-replication-rate-r-0.html#cb79-4"></a><span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="st">`</span><span class="dt">Quantile.0.025(R)</span><span class="st">`</span>,<span class="dt">ymax=</span><span class="st">`</span><span class="dt">Quantile.0.975(R)</span><span class="st">`</span>),<span class="dt">fill=</span><span class="st">&#39;grey75&#39;</span>) <span class="op">+</span></span>
+<span id="cb79-5"><a href="the-replication-rate-r-0.html#cb79-5"></a><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Brazil&#39;</span>)</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="hubei-province" class="section level3" number="7.3.4">
+<h3><span class="header-section-number">7.3.4</span> Hubei Province</h3>
+<p>The incidence data probably need smoothing, and the time-dependent
+model has unreasonable fluctuations.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="the-replication-rate-r-0.html#cb80-1"></a><span class="kw">library</span>(lubridate)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:cowplot&#39;:
+## 
+##     stamp</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="the-replication-rate-r-0.html#cb84-1"></a>dates =<span class="st"> </span>lubridate<span class="op">::</span><span class="kw">as_date</span>(<span class="kw">mdy</span>(<span class="kw">names</span>(mar19df)[<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)]))</span>
+<span id="cb84-2"><a href="the-replication-rate-r-0.html#cb84-2"></a>hubdat =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">get_series</span>(<span class="dt">province=</span><span class="st">&quot;Hubei&quot;</span>, <span class="dt">country=</span><span class="st">&quot;China&quot;</span>, </span>
+<span id="cb84-3"><a href="the-replication-rate-r-0.html#cb84-3"></a>    <span class="dt">dataset=</span>sars2pack<span class="op">::</span>mar19df))</span>
+<span id="cb84-4"><a href="the-replication-rate-r-0.html#cb84-4"></a><span class="kw">names</span>(hubdat) =<span class="st"> </span>dates</span>
+<span id="cb84-5"><a href="the-replication-rate-r-0.html#cb84-5"></a>mGT &lt;-<span class="st"> </span><span class="kw">generation.time</span>(<span class="st">&quot;gamma&quot;</span>, <span class="kw">c</span>(<span class="fl">5.8</span>, <span class="fl">0.95</span>)) <span class="co"># from DOI 10.7326/M20-0504</span></span>
+<span id="cb84-6"><a href="the-replication-rate-r-0.html#cb84-6"></a>mGT &lt;-<span class="st"> </span><span class="kw">generation.time</span>(<span class="st">&quot;gamma&quot;</span>, <span class="kw">c</span>(<span class="fl">3.96</span>, <span class="fl">4.75</span>)) <span class="co"># from DOI 10.7326/M20-0504</span></span>
+<span id="cb84-7"><a href="the-replication-rate-r-0.html#cb84-7"></a>hubdat.filt =<span class="st"> </span><span class="kw">trim_leading_values</span>(<span class="kw">c</span>(hubdat[<span class="dv">1</span>], <span class="kw">diff</span>(hubdat)))</span>
+<span id="cb84-8"><a href="the-replication-rate-r-0.html#cb84-8"></a>est.EG &lt;-<span class="st"> </span><span class="kw">estimate.R</span>(<span class="dt">epid=</span>hubdat.filt, <span class="dt">GT=</span>mGT, </span>
+<span id="cb84-9"><a href="the-replication-rate-r-0.html#cb84-9"></a>    <span class="dt">methods=</span><span class="kw">c</span>(<span class="st">&quot;EG&quot;</span>, <span class="st">&quot;TD&quot;</span>), <span class="dt">begin=</span>1L, <span class="dt">end=</span><span class="kw">as.integer</span>(<span class="kw">length</span>(hubdat.filt)))</span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-01-22` = 444, `2020-01-23` = 0, `2020-01-24`
+## = 105, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-01-22` = 444, `2020-01-23` = 0, `2020-01-24`
+## = 105, : Using initial incidence as initial number of cases.</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="the-replication-rate-r-0.html#cb88-1"></a>est.EG</span></code></pre></div>
+<pre><code>## Reproduction number estimate using  Exponential Growth  method.
+## R :  0.8190473[ 0.8164334 , 0.821658 ]
+## 
+## Reproduction number estimate using  Time-Dependent  method.
+## 2.020789 0 3.0142 3.134995 3.32356 3.865543 1.596743 0 1.878637 2.079345 ...</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="the-replication-rate-r-0.html#cb90-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb90-2"><a href="the-replication-rate-r-0.html#cb90-2"></a><span class="kw">plot2</span>(est.EG)</span>
+<span id="cb90-3"><a href="the-replication-rate-r-0.html#cb90-3"></a><span class="kw">plotfit2</span>(est.EG)</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/dohub-1.png" width="672" /></p>
+</div>
+<div id="italy" class="section level3" number="7.3.5">
+<h3><span class="header-section-number">7.3.5</span> Italy</h3>
+<p>For Italy, only the EG model seems to work, with the
+Annals of Internal Medicine generation time model. It
+fits the data reasonably well, but the data seems to include
+a reporting gap.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="the-replication-rate-r-0.html#cb91-1"></a>itdat =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">get_series</span>(<span class="dt">province=</span><span class="st">&quot;&quot;</span>, <span class="dt">country=</span><span class="st">&quot;Italy&quot;</span>, </span>
+<span id="cb91-2"><a href="the-replication-rate-r-0.html#cb91-2"></a>    <span class="dt">dataset=</span>sars2pack<span class="op">::</span>mar19df))</span>
+<span id="cb91-3"><a href="the-replication-rate-r-0.html#cb91-3"></a><span class="kw">names</span>(itdat) =<span class="st"> </span>dates</span>
+<span id="cb91-4"><a href="the-replication-rate-r-0.html#cb91-4"></a>itdat.filt =<span class="st"> </span><span class="kw">trim_leading_values</span>(<span class="kw">c</span>(itdat[<span class="dv">1</span>], <span class="kw">diff</span>(itdat)))</span>
+<span id="cb91-5"><a href="the-replication-rate-r-0.html#cb91-5"></a>est.EG &lt;-<span class="st"> </span><span class="kw">estimate.R</span>(<span class="dt">epid=</span>itdat.filt, <span class="dt">GT=</span>mGT, </span>
+<span id="cb91-6"><a href="the-replication-rate-r-0.html#cb91-6"></a>    <span class="dt">methods=</span><span class="kw">c</span>(<span class="st">&quot;EG&quot;</span>), <span class="dt">begin=</span>1L, <span class="dt">end=</span><span class="kw">as.integer</span>(<span class="kw">length</span>(itdat.filt)))</span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="the-replication-rate-r-0.html#cb93-1"></a>est.EG</span></code></pre></div>
+<pre><code>## Reproduction number estimate using  Exponential Growth  method.
+## R :  1.968466[ 1.957161 , 1.979874 ]</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="the-replication-rate-r-0.html#cb95-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb95-2"><a href="the-replication-rate-r-0.html#cb95-2"></a><span class="kw">plot2</span>(est.EG, <span class="dt">main=</span><span class="st">&quot;Italy&quot;</span>)</span>
+<span id="cb95-3"><a href="the-replication-rate-r-0.html#cb95-3"></a><span class="kw">plotfit2</span>(est.EG, <span class="dt">main=</span><span class="st">&quot;Italy&quot;</span>)</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/doit-1.png" width="672" /></p>
+</div>
+<div id="new-york-city" class="section level3" number="7.3.6">
+<h3><span class="header-section-number">7.3.6</span> New York City</h3>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="the-replication-rate-r-0.html#cb96-1"></a>nyt =<span class="st"> </span><span class="kw">nytimes_county_data</span>() <span class="op">%&gt;%</span></span>
+<span id="cb96-2"><a href="the-replication-rate-r-0.html#cb96-2"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(county<span class="op">==</span><span class="st">&#39;New York City&#39;</span> <span class="op">&amp;</span><span class="st"> </span>subset<span class="op">==</span><span class="st">&#39;confirmed&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb96-3"><a href="the-replication-rate-r-0.html#cb96-3"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">arrange</span>(date)</span>
+<span id="cb96-4"><a href="the-replication-rate-r-0.html#cb96-4"></a>nytdat =<span class="st"> </span>nyt<span class="op">$</span>count</span>
+<span id="cb96-5"><a href="the-replication-rate-r-0.html#cb96-5"></a><span class="co"># do we need to chop zeros off? Seems like not.</span></span>
+<span id="cb96-6"><a href="the-replication-rate-r-0.html#cb96-6"></a>nytdat.filt =<span class="st"> </span><span class="kw">c</span>(nytdat[<span class="dv">1</span>], <span class="kw">diff</span>(nytdat))</span>
+<span id="cb96-7"><a href="the-replication-rate-r-0.html#cb96-7"></a>est &lt;-<span class="st"> </span><span class="kw">estimate.R</span>(<span class="dt">epid=</span>nytdat.filt, <span class="dt">GT=</span>mGT, </span>
+<span id="cb96-8"><a href="the-replication-rate-r-0.html#cb96-8"></a>                  <span class="dt">methods=</span><span class="kw">c</span>(<span class="st">&quot;EG&quot;</span>,<span class="st">&quot;TD&quot;</span>,<span class="st">&quot;ML&quot;</span>), <span class="dt">begin=</span>1L, <span class="dt">end=</span><span class="kw">as.integer</span>(<span class="kw">length</span>(nytdat.filt)))</span></code></pre></div>
+<p>We can also use the package <em><a href="https://CRAN.R-project.org/package=EpiEstim">EpiEstim</a></em> to perform time-dependent <span class="math inline">\(R_0\)</span> calculations.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="the-replication-rate-r-0.html#cb97-1"></a><span class="kw">library</span>(EpiEstim)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;EpiEstim&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:sars2pack&#39;:
+## 
+##     estimate_R</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="the-replication-rate-r-0.html#cb100-1"></a>epiestim =<span class="st"> </span>EpiEstim<span class="op">::</span><span class="kw">estimate_R</span>(nytdat.filt, <span class="dt">method =</span> <span class="st">&quot;parametric_si&quot;</span>,</span>
+<span id="cb100-2"><a href="the-replication-rate-r-0.html#cb100-2"></a>                                <span class="dt">config =</span> EpiEstim<span class="op">::</span><span class="kw">make_config</span>(<span class="kw">list</span>(</span>
+<span id="cb100-3"><a href="the-replication-rate-r-0.html#cb100-3"></a>                                    <span class="dt">mean_si =</span> <span class="fl">3.96</span>, <span class="dt">std_si =</span> <span class="fl">4.75</span>)))</span></code></pre></div>
+<pre><code>## Default config will estimate R on weekly sliding windows.
+##     To change this change the t_start and t_end arguments.</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="the-replication-rate-r-0.html#cb102-1"></a><span class="kw">invisible</span>(<span class="kw">plot</span>(epiestim))</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+</div>
+<div id="italy-from-jhu-dataset" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Italy from JHU dataset</h2>
+<p>This example uses data</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="the-replication-rate-r-0.html#cb103-1"></a>jhu =<span class="st"> </span><span class="kw">jhu_data</span>() <span class="op">%&gt;%</span></span>
+<span id="cb103-2"><a href="the-replication-rate-r-0.html#cb103-2"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(CountryRegion<span class="op">==</span><span class="st">&#39;Italy&#39;</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(ProvinceState) <span class="op">&amp;</span><span class="st"> </span>subset<span class="op">==</span><span class="st">&#39;confirmed&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb103-3"><a href="the-replication-rate-r-0.html#cb103-3"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">arrange</span>(date)</span>
+<span id="cb103-4"><a href="the-replication-rate-r-0.html#cb103-4"></a>jhucases =<span class="st"> </span>jhu<span class="op">$</span>count</span>
+<span id="cb103-5"><a href="the-replication-rate-r-0.html#cb103-5"></a><span class="co"># do we need to chop zeros off? Seems like not.</span></span>
+<span id="cb103-6"><a href="the-replication-rate-r-0.html#cb103-6"></a>jhucases.inc =<span class="st"> </span><span class="kw">c</span>(jhucases[<span class="dv">1</span>], <span class="kw">diff</span>(jhucases))</span>
+<span id="cb103-7"><a href="the-replication-rate-r-0.html#cb103-7"></a>jhucases.inc[jhucases.inc<span class="op">&lt;</span><span class="dv">0</span>] =<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb103-8"><a href="the-replication-rate-r-0.html#cb103-8"></a>epiestim =<span class="st"> </span>EpiEstim<span class="op">::</span><span class="kw">estimate_R</span>(jhucases.inc, <span class="dt">method =</span> <span class="st">&quot;parametric_si&quot;</span>,</span>
+<span id="cb103-9"><a href="the-replication-rate-r-0.html#cb103-9"></a>                                <span class="dt">config =</span> EpiEstim<span class="op">::</span><span class="kw">make_config</span>(<span class="kw">list</span>(</span>
+<span id="cb103-10"><a href="the-replication-rate-r-0.html#cb103-10"></a>                                                       <span class="dt">mean_si =</span> <span class="fl">3.96</span>, <span class="dt">std_si =</span> <span class="fl">4.75</span>)))</span></code></pre></div>
+<pre><code>## Default config will estimate R on weekly sliding windows.
+##     To change this change the t_start and t_end arguments.</code></pre>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="the-replication-rate-r-0.html#cb105-1"></a>meanR =<span class="st"> </span>epiestim<span class="op">$</span>R<span class="op">$</span><span class="st">`</span><span class="dt">Mean(R)</span><span class="st">`</span></span>
+<span id="cb105-2"><a href="the-replication-rate-r-0.html#cb105-2"></a><span class="kw">plot</span>(meanR, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>),<span class="dt">main=</span><span class="st">&#39;R(t) for Italy&#39;</span>, <span class="dt">ylab=</span><span class="st">&#39;R&#39;</span>, <span class="dt">xlab=</span><span class="st">&#39;date&#39;</span>)</span>
+<span id="cb105-3"><a href="the-replication-rate-r-0.html#cb105-3"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">1</span>, <span class="dt">lty=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="simulated-epidemic-model" class="section level2" number="7.5">
+<h2><span class="header-section-number">7.5</span> Simulated epidemic model</h2>
+<p>Following code conveyed by John Mallery, we have the following
+approach for estimating <span class="math inline">\(R_0\)</span> using a single realization of
+an epidemic simulation.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="the-replication-rate-r-0.html#cb106-1"></a><span class="kw">library</span>(sars2pack)</span>
+<span id="cb106-2"><a href="the-replication-rate-r-0.html#cb106-2"></a><span class="kw">library</span>(R0)</span>
+<span id="cb106-3"><a href="the-replication-rate-r-0.html#cb106-3"></a><span class="kw">library</span>(lubridate)</span>
+<span id="cb106-4"><a href="the-replication-rate-r-0.html#cb106-4"></a><span class="co"># Generating an epidemic with given parameters</span></span>
+<span id="cb106-5"><a href="the-replication-rate-r-0.html#cb106-5"></a>mGT &lt;-<span class="st"> </span><span class="kw">generation.time</span>(<span class="st">&quot;gamma&quot;</span>, <span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">1.5</span>))</span>
+<span id="cb106-6"><a href="the-replication-rate-r-0.html#cb106-6"></a><span class="kw">set.seed</span>(<span class="dv">5432</span>)  <span class="co"># always initialize when simulating!</span></span>
+<span id="cb106-7"><a href="the-replication-rate-r-0.html#cb106-7"></a>mEpid &lt;-<span class="st"> </span><span class="kw">sim.epid</span>(<span class="dt">epid.nb=</span><span class="dv">1</span>, <span class="dt">GT=</span>mGT, <span class="dt">epid.length=</span><span class="dv">30</span>, </span>
+<span id="cb106-8"><a href="the-replication-rate-r-0.html#cb106-8"></a>     <span class="dt">family=</span><span class="st">&quot;poisson&quot;</span>, <span class="dt">R0=</span><span class="fl">1.67</span>, <span class="dt">peak.value=</span><span class="dv">500</span>)</span>
+<span id="cb106-9"><a href="the-replication-rate-r-0.html#cb106-9"></a>mEpid &lt;-<span class="st"> </span>mEpid[,<span class="dv">1</span>]</span>
+<span id="cb106-10"><a href="the-replication-rate-r-0.html#cb106-10"></a><span class="co"># Running estimations</span></span>
+<span id="cb106-11"><a href="the-replication-rate-r-0.html#cb106-11"></a>est &lt;-<span class="st"> </span><span class="kw">estimate.R</span>(<span class="dt">epid=</span>mEpid, <span class="dt">GT=</span>mGT, <span class="dt">methods=</span><span class="kw">c</span>(<span class="st">&quot;EG&quot;</span>,<span class="st">&quot;ML&quot;</span>,<span class="st">&quot;TD&quot;</span>), <span class="dt">begin=</span><span class="dv">1</span>, <span class="dt">end=</span><span class="dv">30</span>)</span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(1, 0, 1, 0, 1, 0, 2, 1, 2, 1, 7, 2, 3, 4, :
+## Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(1, 0, 1, 0, 1, 0, 2, 1, 2, 1, 7, 2, 3, 4, : Using
+## initial incidence as initial number of cases.</code></pre>
+<p>We modified the plotting function in <em><a href="https://CRAN.R-project.org/package=R0">R0</a></em> which
+was calling <code>dev.new</code> too often. Use <code>plot2</code>.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="the-replication-rate-r-0.html#cb110-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb110-2"><a href="the-replication-rate-r-0.html#cb110-2"></a>sars2pack<span class="op">::</span><span class="kw">plot2</span>(est)</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/lksim-1.png" width="672" /></p>
+<p>The <code>plotfit2</code> function is also useful. These fits
+look identical but they are not.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="the-replication-rate-r-0.html#cb111-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb111-2"><a href="the-replication-rate-r-0.html#cb111-2"></a>sars2pack<span class="op">::</span><span class="kw">plotfit2</span>(est)</span></code></pre></div>
+<p><img src="r0_estimates_files/figure-html/lksim2-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="visualizing-geographic-data-without-maps.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="how-to-add-a-new-dataset-to-sars2pack.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
