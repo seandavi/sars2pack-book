@@ -12,6 +12,7 @@ language:
 new_session: yes
 rmd_files:
   - index.Rmd
+  - covid_cases_death.Rmd
   - overview.Rmd
   - datasets.Rmd
   - case_tracking.Rmd
