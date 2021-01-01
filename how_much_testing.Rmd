@@ -3,7 +3,7 @@
 
 ```{r include=FALSE}
 library(knitr)
-knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE)
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, cache=FALSE)
 ```
 
 ```{r init}
@@ -255,16 +255,14 @@ p
 ```
 
 ```{r owid, fig.cap='Worldwide testing results.'}
-p = owid %>% dplyr::filter(positive>0 & tests>500) %>% dplyr::group_by(country) %>%
-    dplyr::filter(date > max(date)-28) %>% 
-    dplyr::ungroup() %>%
-    ggplot(aes(x=tests,y=positive/tests, color=country,group=country)) + 
+p = p = owid[,d1:=max(date,na.rm=TRUE)-180,by=c("country")][tests>500 & positive>0 & date>d1,] %>%
+    ggplot(aes(x=tests,y=positive/tests, color=country, group=continent)) +
     geom_line(alpha=0.7) + theme_light() +
     scale_y_log10() + scale_x_log10() +
-    xlab(expression(log[10](tests))) + ylab(expression('proportion positive tests',log[10])) +
+    xlab("test positivity rate") + 
     theme(legend.position='none')
-#library(plotly)
-#ggplotly(p)
+library(plotly)
+ggplotly(p)
 p
 ```
 
