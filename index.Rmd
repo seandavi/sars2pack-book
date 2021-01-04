@@ -19,7 +19,7 @@ cover-image: images/cover.png
 documentclass: book
 
 author: 
-  - Vincent J. Carey^[Harard Medical School, Channing Laboratory, Brigham and Women's Hospital]
+  - Vincent J. Carey^[Harvard Medical School, Channing Laboratory, Brigham and Women's Hospital]
   - Charles Morefield^[Arctan, Inc.]
   - John Mallery^[MIT Artificial Intelligence Laboratory]
   - Sean Davis^[National Cancer Institute, National Institutes of Health]
